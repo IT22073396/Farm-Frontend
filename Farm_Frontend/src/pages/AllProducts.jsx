@@ -1,162 +1,229 @@
 import { useContext, useEffect, useState } from "react";
-import React from "react";
-import Button from 'react-bootstrap/Button';
-import Stack from 'react-bootstrap/Stack';
-import Table from 'react-bootstrap/Table';
-import Modal from 'react-bootstrap/Modal';
-import Spinner from 'react-bootstrap/Spinner';
-import ToastContext from "../context/ToastContext";
+import { Button, Table, Modal, Spinner, Alert } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { PDFDownloadLink } from '@react-pdf/renderer';
-import ProductPDFReport from './ProductPDFReport'; // Assuming ProductPDFReport component is in a separate file
+import ToastContext from "../context/ToastContext";
+import ProductPDFReport from './ProductPDFReport';
 
-const AllProducts = () =>{
-    const {toast}= useContext(ToastContext);
-    const [showModal,setShowModal] = useState(false);
-    const [loading,setLoading] = useState(false);
-    const [selectedProduct, setSelectedProduct] = useState(null);
-    const [products,setProducts] = useState([]);
-    const [searchInput,setSearchInput] = useState("");
-  
-    useEffect(() => {
-        async function fetchProducts(){
-            setLoading(true);
-            try {
-                const res = await fetch('http://localhost:4000/api/products',{
-                    method:"GET",
-                    headers:{
-                        "Authorization":`Bearer ${localStorage.getItem("token")}`,
-                    }
-                });
-                const result = await res.json();
-                if(!result.error){
-                    setProducts(result.products);
-                    setLoading(false);
-                }else{
-                    console.log(result);
-                    setLoading(false);
+const AllProducts = () => {
+    const { toast } = useContext(ToastContext);
+    const [showModal, setShowModal] = useState(false);
+    const [loading, setLoading] = useState(true);
+    const [products, setProducts] = useState([]);
+    const [searchInput, setSearchInput] = useState("");
+    const [error, setError] = useState(null);
+
+    const fetchProducts = async () => {
+        setLoading(true);
+        setError(null);
+        try {
+            const res = await fetch('http://localhost:4000/api/products', {
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${localStorage.getItem("token")}`,
                 }
-            } catch (err) {
-                setLoading(false);
-                console.log(err);
+            });
+            
+            const data = await res.json();
+            
+            if (!res.ok) {
+                throw new Error(data.error || "Failed to fetch products");
             }
+
+            // Handle both array response and object with products property
+            const receivedProducts = Array.isArray(data) ? data : data.products || data.data || [];
+            setProducts(receivedProducts);
+            
+        } catch (err) {
+            console.error("Fetch error:", err);
+            setError(err.message);
+            toast.error(err.message);
+        } finally {
+            setLoading(false);
         }
+    };
+
+    useEffect(() => {
         fetchProducts();
     }, []);
 
-    const deleteProducts = async (id) => {
-        if(window.confirm("Are you sure you want to delete this Product?")){
+    const deleteProduct = async (id) => {
+        if (window.confirm("Are you sure you want to delete this product?")) {
             try {
-                const res= await fetch(`http://localhost:4000/api/products/${id}`,{
-                    method:"DELETE",
-                    headers:{"Authorization":`Bearer ${localStorage.getItem("token")}`,}
-                })
+                const res = await fetch(`http://localhost:4000/api/products/${id}`, {
+                    method: "DELETE",
+                    headers: {
+                        "Authorization": `Bearer ${localStorage.getItem("token")}`,
+                    }
+                });
+                
                 const result = await res.json();
-                if(!result.error){
-                    toast.success("Deleted Product");
-                    setShowModal(false);
-                    setLoading(true);
-                    fetchProducts();
-                }else{
-                    toast.error(result.error);
+                
+                if (!res.ok) {
+                    throw new Error(result.error || "Delete failed");
                 }
+
+                toast.success("Product deleted");
+                fetchProducts(); // Refresh the list
             } catch (err) {
-                console.log(err);
+                toast.error(err.message);
             }
         }
-    }
-    
-    const handleSearchSubmit = (event) => {
-        event.preventDefault();
-        const newSearchProduct = products.filter((product) => 
-            product.name.toLowerCase().includes(searchInput.toLowerCase())
-        );
-        setProducts(newSearchProduct);
     };
 
-    return (
-        <>
-            <div>
-                This is the All Products page
-                <br />
-                <a href="/allproducts" className="btn btn-danger my-2">Reload Products</a>
-                <form className="d-flex" onSubmit={handleSearchSubmit}>
-                    <input
-                        type="text" 
-                        name="searchInput" 
-                        id="searchInput"  
-                        className="form-control my-2" 
-                        placeholder="Search Product"
-                        value={searchInput}
-                        onChange={(e) => setSearchInput(e.target.value)}
-                    />
-                    <Button id="Search"  variant="primary" type="submit" className="btn btn-info mx-2">
-                        Search
-                    </Button>{' '}
-                </form>
-                <p>Total No of Products: {products.length}</p>
-                <Table striped bordered hover variant="dark">
-                    <thead>
-                        <tr>
-                            <th>Product Name</th>
-                            <th>Product ID</th>
-                            <th>Quantity</th>
-                            <th>Price (Lkr)</th>
-                            <th>Description</th>
-                            <th>Product Image</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {loading === false && products.map((product) =>(
-                            <tr key={product._id} onClick={()=> {
-                                setSelectedProduct({});
-                                setSelectedProduct(product);
-                                setShowModal(true);
-                            }}>
-                                <td>{product.name}</td>
-                                <td>{product.productId}</td>
-                                <td>{product.quantity}</td>
-                                <td>{product.price}</td>
-                                <td>{product.description}</td>
-                                <td>{product.imageUrl && (
-                                    <img src={`http://localhost:4000/${product.imageUrl}`} alt={product.name} style={{width:'100px',height:'auto'}}/>
-                                )}</td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </Table>
-            </div>
-            <div className="modal show" style={{ display: 'block', position: 'initial' }}>
-                <Modal show={showModal} onHide={() => setShowModal(false)}>
-                    <Modal.Header closeButton>
-                        {selectedProduct && <Modal.Title>Product Details</Modal.Title>}
-                    </Modal.Header>
-                    <Modal.Body>
-                        {selectedProduct && (
-                            <>
-                                <p><strong>Name:</strong> {selectedProduct.name}</p>
-                                <p><strong>Product ID:</strong> {selectedProduct.productId}</p>
-                                <p><strong>Quantity:</strong> {selectedProduct.quantity}</p>
-                                <p><strong>Price in Lkr:</strong> {selectedProduct.price}</p>
-                                <p><strong>Description:</strong> {selectedProduct.description}</p>
-                                <p><strong>Product Image:</strong> {selectedProduct.imageUrl && (
-                                    <img src={`http://localhost:4000/${selectedProduct.imageUrl}`} alt={selectedProduct.name} style={{width:'100px',height:'auto'}}/>
-                                )}</p>
-                            </>
-                        )}
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Link className="btn btn-info" to={`/editproducts/${selectedProduct?._id}`}>Edit</Link>
-                        <Button id="btn btn-danger" variant="primary" onClick={() => deleteProducts(selectedProduct._id)}>Delete</Button>
-                        <Button id="btn btn-warning" variant="secondary" onClick={() => setShowModal(false)}>Close</Button>
-                    </Modal.Footer>
-                </Modal>
-            </div>
-            <PDFDownloadLink document={<ProductPDFReport products={products} />} fileName="products_report.pdf">
-                {({ blob, url, loading, error }) => (loading ? 'Loading document...' : 'Download Report')}
-            </PDFDownloadLink>
-        </>
+    const filteredProducts = products.filter(product =>
+        product?.name?.toLowerCase().includes(searchInput.toLowerCase())
     );
-}
+
+    return (
+        <div className="container mt-4">
+            <h2>Product Inventory</h2>
+            
+            <div className="mb-3 d-flex">
+                <input
+                    type="text"
+                    className="form-control"
+                    placeholder="Search products..."
+                    value={searchInput}
+                    onChange={(e) => setSearchInput(e.target.value)}
+                />
+                <Button 
+                    variant="secondary" 
+                    onClick={() => setSearchInput("")}
+                    className="ms-2"
+                >
+                    Clear
+                </Button>
+            </div>
+
+            {loading ? (
+                <div className="text-center">
+                    <Spinner animation="border" />
+                    <p>Loading products...</p>
+                </div>
+            ) : error ? (
+                <Alert variant="danger">
+                    Error: {error}
+                    <Button variant="primary" onClick={fetchProducts} className="ms-3">
+                        Retry
+                    </Button>
+                </Alert>
+            ) : filteredProducts.length === 0 ? (
+                <Alert variant="info">
+                    {searchInput ? "No matching products found" : "No products available"}
+                </Alert>
+            ) : (
+                <>
+                    <p>Showing {filteredProducts.length} products</p>
+                    <Table striped bordered hover responsive>
+                        <thead className="table-dark">
+                            <tr>
+                                <th>Name</th>
+                                <th>ID</th>
+                                <th>Qty</th>
+                                <th>Price</th>
+                                <th>Image</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {filteredProducts.map(product => (
+                                <tr key={product._id}>
+                                    <td>{product.name}</td>
+                                    <td>{product.productId}</td>
+                                    <td>{product.quantity}</td>
+                                    <td>LKR {product.price}</td>
+                                    <td>
+                                        {product.imageUrl && (
+                                            <img
+                                                src={`http://localhost:4000${product.imageUrl}`}
+                                                alt={product.name}
+                                                style={{ width: '80px', height: 'auto' }}
+                                                className="img-thumbnail"
+                                            />
+                                        )}
+                                    </td>
+                                    <td>
+                                        <Button
+                                            variant="info"
+                                            size="sm"
+                                            onClick={() => setShowModal(product)}
+                                        >
+                                            View
+                                        </Button>
+                                        <Link
+                                            to={`/editproducts/${product._id}`}
+                                            className="btn btn-warning btn-sm ms-2"
+                                        >
+                                            Edit
+                                        </Link>
+                                        <Button
+                                            variant="danger"
+                                            size="sm"
+                                            className="ms-2"
+                                            onClick={() => deleteProduct(product._id)}
+                                        >
+                                            Delete
+                                        </Button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </Table>
+
+                    <div className="mt-3">
+                        <PDFDownloadLink 
+                            document={<ProductPDFReport products={filteredProducts} />} 
+                            fileName="products_report.pdf"
+                            className="btn btn-primary"
+                        >
+                            {({ loading }) => (loading ? 'Generating PDF...' : 'Download PDF Report')}
+                        </PDFDownloadLink>
+                    </div>
+                </>
+            )}
+
+            {/* Product Details Modal */}
+            <Modal show={!!showModal} onHide={() => setShowModal(false)} size="lg">
+                <Modal.Header closeButton>
+                    <Modal.Title>{showModal?.name} Details</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    {showModal && (
+                        <div className="row">
+                            <div className="col-md-6">
+                                <p><strong>Description:</strong> {showModal.description}</p>
+                                <p><strong>Product ID:</strong> {showModal.productId}</p>
+                                <p><strong>Quantity:</strong> {showModal.quantity}</p>
+                                <p><strong>Price:</strong> LKR {showModal.price}</p>
+                            </div>
+                            <div className="col-md-6">
+                                {showModal.imageUrl && (
+                                    <img
+                                        src={`http://localhost:4000${showModal.imageUrl}`}
+                                        alt={showModal.name}
+                                        className="img-fluid rounded"
+                                        style={{ maxHeight: "300px" }}
+                                    />
+                                )}
+                            </div>
+                        </div>
+                    )}
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={() => setShowModal(false)}>
+                        Close
+                    </Button>
+                    <Link
+                        to={`/editproducts/${showModal?._id}`}
+                        className="btn btn-primary"
+                    >
+                        Edit Product
+                    </Link>
+                </Modal.Footer>
+            </Modal>
+        </div>
+    );
+};
 
 export default AllProducts;

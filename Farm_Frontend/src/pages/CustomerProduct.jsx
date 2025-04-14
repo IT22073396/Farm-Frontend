@@ -1,11 +1,10 @@
 import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import Button from 'react-bootstrap/Button';
-import Stack from 'react-bootstrap/Stack';
 import ToastContext from "../context/ToastContext";
 import { Card, Spinner, Form, Row, Col } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import '../css/CustomerProduct.css'; // Import custom CSS file
 
 const CustomerProduct = () => {
     const navigate = useNavigate();
@@ -14,21 +13,23 @@ const CustomerProduct = () => {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(false);
     const [cart, setCart] = useState([]);
-    const [searchTerm, setSearchTerm] = useState(""); // State for search term
+    const [searchTerm, setSearchTerm] = useState("");
 
     useEffect(() => {
-        !user && navigate("/login", { replace: true });
+        if (!user) {
+            navigate("/login", { replace: true });
+            return;
+        }
+
         setLoading(true);
         fetchProducts();
-        
-        // Retrieve cart from localStorage when component mounts
+
         const storedCart = localStorage.getItem("cart");
         if (storedCart) {
             setCart(JSON.parse(storedCart));
         }
     }, []);
 
-    // Update localStorage whenever  cart changes
     useEffect(() => {
         localStorage.setItem("cart", JSON.stringify(cart));
     }, [cart]);
@@ -41,16 +42,24 @@ const CustomerProduct = () => {
                     "Authorization": `Bearer ${localStorage.getItem("token")}`,
                 }
             });
+
             const result = await res.json();
-            if (!result.error) {
+            console.log("🟡 API Response:", result);
+
+            if (Array.isArray(result)) {
+                setProducts(result);
+            } else if (Array.isArray(result.products)) {
                 setProducts(result.products);
-                setLoading(false);
+            } else if (Array.isArray(result.data)) {
+                setProducts(result.data);
             } else {
-                toast.error(result.error);
-                setLoading(false);
+                toast.error(result.error || "Unexpected response structure");
             }
+
         } catch (err) {
             toast.error("Failed to fetch products");
+            console.error("Fetch error:", err);
+        } finally {
             setLoading(false);
         }
     };
@@ -58,48 +67,40 @@ const CustomerProduct = () => {
     const addToCart = (product, quantity) => {
         const existingItem = cart.find(item => item._id === product._id);
         if (existingItem) {
-            const updatedCart = cart.map(item => {
-                if (item._id === product._id) {
-                    return { ...item, quantity: item.quantity + quantity };
-                }
-                return item;
-            });
+            const updatedCart = cart.map(item =>
+                item._id === product._id
+                    ? { ...item, quantity: item.quantity + quantity }
+                    : item
+            );
             setCart(updatedCart);
         } else {
-            const updatedCart = [...cart, { ...product, quantity }];
-            setCart(updatedCart);
+            setCart([...cart, { ...product, quantity }]);
         }
         toast.success("Added to Cart");
     };
 
     const updateQuantity = (productId, quantity, fromCart) => {
         if (fromCart) {
-            const updatedCart = cart.map(item => {
-                if (item._id === productId) {
-                    return { ...item, quantity };
-                }
-                return item;
-            });
+            const updatedCart = cart.map(item =>
+                item._id === productId ? { ...item, quantity } : item
+            );
             setCart(updatedCart);
         } else {
-            const updatedProducts = products.map(product => {
-                if (product._id === productId) {
-                    return { ...product, quantity };
-                }
-                return product;
-            });
+            const updatedProducts = products.map(product =>
+                product._id === productId ? { ...product, quantity } : product
+            );
             setProducts(updatedProducts);
         }
     };
 
-    // Filter products based on search term
-    const filteredProducts = products.filter(product =>
-        product.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    const filteredProducts = products?.filter(product =>
+        product.name?.toLowerCase().includes(searchTerm.toLowerCase())
+    ) || [];
 
     return (
-        <div className="container">
-            <h2 className="mb-4">Welcome, {user ? user.name : null}</h2>
+        <div className="container customer-product-container">
+            <h2 className="mb-4">Welcome, {user?.name}</h2>
+
             <Form.Group controlId="search" className="mb-3">
                 <Form.Control
                     type="text"
@@ -108,35 +109,86 @@ const CustomerProduct = () => {
                     onChange={(e) => setSearchTerm(e.target.value)}
                 />
             </Form.Group>
+
             <p className="mb-4">Here are some products for you:</p>
+
             {loading ? (
                 <Spinner animation="border" role="status">
                     <span className="visually-hidden">Loading...</span>
                 </Spinner>
             ) : (
                 <Row xs={1} md={2} lg={3} className="g-4">
-                    {filteredProducts.map((product) => (
-                        <Col key={product._id}>
-                            <Card>
-                                <Card.Img variant="top" src={`http://localhost:4000/${product.imageUrl}`} alt={product.name} />
-                                <Card.Body>
-                                    <Card.Title>{product.name}</Card.Title>
-                                    <Card.Text>Price: ${product.price}</Card.Text>
-                                    <Form.Group controlId={`quantity-${product._id}`} className="mb-3">
-                                        <Form.Label>Quantity</Form.Label>
-                                        <Form.Control
-                                            type="number"
-                                            defaultValue="1"
-                                            min="1"
-                                            onChange={(e) => updateQuantity(product._id, parseInt(e.target.value), false)}
-                                        />
-                                    </Form.Group>
-                                    <Button variant="primary" onClick={() => addToCart(product, parseInt(document.getElementById(`quantity-${product._id}`).value))}>Add to Cart</Button>
-                                    <Link to={`/product-details/${product._id}`} className="btn btn-primary ms-2">View Details</Link>
-                                </Card.Body>
-                            </Card>
+                    {filteredProducts.length > 0 ? (
+                        filteredProducts.map((product) => {
+                            const imageUrl = product.imageUrl.startsWith('http') 
+                                ? product.imageUrl 
+                                : `http://localhost:4000${product.imageUrl.startsWith('/') ? '' : '/'}${product.imageUrl}`;
+
+                            return (
+                                <Col key={product._id}>
+                                    <Card className="h-100 product-card">
+                                        <div className="product-image-container">
+                                            <Card.Img
+                                                variant="top"
+                                                src={imageUrl}
+                                                alt={product.name}
+                                                className="product-image"
+                                                onError={(e) => { 
+                                                    console.error('Image load failed:', e.target.src);
+                                                    e.target.src = "/placeholder.jpg"; 
+                                                }}
+                                            />
+                                        </div>
+                                        <Card.Body className="d-flex flex-column card-body-flex">
+                                            <Card.Title className="product-title">{product.name}</Card.Title>
+                                            <Card.Text className="product-price">Price: ${product.price}</Card.Text>
+                                            <Form.Group controlId={`quantity-${product._id}`} className="mb-3">
+                                                <Form.Label>Quantity</Form.Label>
+                                                <Form.Control
+                                                    type="number"
+                                                    defaultValue="1"
+                                                    min="1"
+                                                    onChange={(e) =>
+                                                        updateQuantity(
+                                                            product._id,
+                                                            parseInt(e.target.value),
+                                                            false
+                                                        )
+                                                    }
+                                                />
+                                            </Form.Group>
+                                            <div className="mt-auto card-buttons">
+                                                <Button
+                                                    variant="primary"
+                                                    className="me-2"
+                                                    onClick={() =>
+                                                        addToCart(
+                                                            product,
+                                                            parseInt(
+                                                                document.getElementById(`quantity-${product._id}`).value
+                                                            )
+                                                        )
+                                                    }
+                                                >
+                                                    Add to Cart
+                                                </Button>
+                                                <Link
+                                                    to={`/product-details/${product._id}`}
+                                                    className="btn btn-outline-primary"
+                                                >
+                                                    View Details
+                                                </Link>
+                                            </div>
+                                        </Card.Body>
+                                    </Card>
+                                </Col>
+                            );
+                        })
+                    ) : (
+                        <Col>
+                            <p>No products found.</p>
                         </Col>
-                    ))}
+                    )}
                 </Row>
             )}
         </div>

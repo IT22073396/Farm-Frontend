@@ -2,15 +2,15 @@ import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { useNavigate, Link } from "react-router-dom";
 import Button from 'react-bootstrap/Button';
-import Stack from 'react-bootstrap/Stack';
 import ToastContext from "../context/ToastContext";
 import { Card, Spinner, Form, Row, Col } from "react-bootstrap";
+import '../css/CustomerProduct.css'; // Import custom CSS file
 
 const CustomerProduct = () => {
     const navigate = useNavigate();
     const { user } = useContext(AuthContext);
     const { toast } = useContext(ToastContext);
-    const [products, setProducts] = useState([]); // Default to empty array
+    const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(false);
     const [cart, setCart] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
@@ -44,15 +44,14 @@ const CustomerProduct = () => {
             });
 
             const result = await res.json();
-            console.log("🟡 API Response:", result); // <-- Debug log
+            console.log("🟡 API Response:", result);
 
-            // Flexible handling based on shape of API response
             if (Array.isArray(result)) {
-                setProducts(result); // Direct array response
+                setProducts(result);
             } else if (Array.isArray(result.products)) {
-                setProducts(result.products); // Expected shape
+                setProducts(result.products);
             } else if (Array.isArray(result.data)) {
-                setProducts(result.data); // Alternate API shape
+                setProducts(result.data);
             } else {
                 toast.error(result.error || "Unexpected response structure");
             }
@@ -99,7 +98,7 @@ const CustomerProduct = () => {
     ) || [];
 
     return (
-        <div className="container">
+        <div className="container customer-product-container">
             <h2 className="mb-4">Welcome, {user?.name}</h2>
 
             <Form.Group controlId="search" className="mb-3">
@@ -120,56 +119,71 @@ const CustomerProduct = () => {
             ) : (
                 <Row xs={1} md={2} lg={3} className="g-4">
                     {filteredProducts.length > 0 ? (
-                        filteredProducts.map((product) => (
-                            <Col key={product._id}>
-                                <Card>
-                                    <Card.Img
-                                        variant="top"
-                                        src={`http://localhost:4000/${product.imageUrl || "default-image.jpg"}`}
-                                        alt={product.name}
-                                        onError={(e) => { e.target.src = "/placeholder.jpg"; }}
-                                    />
-                                    <Card.Body>
-                                        <Card.Title>{product.name}</Card.Title>
-                                        <Card.Text>Price: ${product.price}</Card.Text>
-                                        <Form.Group controlId={`quantity-${product._id}`} className="mb-3">
-                                            <Form.Label>Quantity</Form.Label>
-                                            <Form.Control
-                                                type="number"
-                                                defaultValue="1"
-                                                min="1"
-                                                onChange={(e) =>
-                                                    updateQuantity(
-                                                        product._id,
-                                                        parseInt(e.target.value),
-                                                        false
-                                                    )
-                                                }
+                        filteredProducts.map((product) => {
+                            const imageUrl = product.imageUrl.startsWith('http') 
+                                ? product.imageUrl 
+                                : `http://localhost:4000${product.imageUrl.startsWith('/') ? '' : '/'}${product.imageUrl}`;
+
+                            return (
+                                <Col key={product._id}>
+                                    <Card className="h-100 product-card">
+                                        <div className="product-image-container">
+                                            <Card.Img
+                                                variant="top"
+                                                src={imageUrl}
+                                                alt={product.name}
+                                                className="product-image"
+                                                onError={(e) => { 
+                                                    console.error('Image load failed:', e.target.src);
+                                                    e.target.src = "/placeholder.jpg"; 
+                                                }}
                                             />
-                                        </Form.Group>
-                                        <Button
-                                            variant="primary"
-                                            onClick={() =>
-                                                addToCart(
-                                                    product,
-                                                    parseInt(
-                                                        document.getElementById(`quantity-${product._id}`).value
-                                                    )
-                                                )
-                                            }
-                                        >
-                                            Add to Cart
-                                        </Button>
-                                        <Link
-                                            to={`/product-details/${product._id}`}
-                                            className="btn btn-primary ms-2"
-                                        >
-                                            View Details
-                                        </Link>
-                                    </Card.Body>
-                                </Card>
-                            </Col>
-                        ))
+                                        </div>
+                                        <Card.Body className="d-flex flex-column card-body-flex">
+                                            <Card.Title className="product-title">{product.name}</Card.Title>
+                                            <Card.Text className="product-price">Price: ${product.price}</Card.Text>
+                                            <Form.Group controlId={`quantity-${product._id}`} className="mb-3">
+                                                <Form.Label>Quantity</Form.Label>
+                                                <Form.Control
+                                                    type="number"
+                                                    defaultValue="1"
+                                                    min="1"
+                                                    onChange={(e) =>
+                                                        updateQuantity(
+                                                            product._id,
+                                                            parseInt(e.target.value),
+                                                            false
+                                                        )
+                                                    }
+                                                />
+                                            </Form.Group>
+                                            <div className="mt-auto card-buttons">
+                                                <Button
+                                                    variant="primary"
+                                                    className="me-2"
+                                                    onClick={() =>
+                                                        addToCart(
+                                                            product,
+                                                            parseInt(
+                                                                document.getElementById(`quantity-${product._id}`).value
+                                                            )
+                                                        )
+                                                    }
+                                                >
+                                                    Add to Cart
+                                                </Button>
+                                                <Link
+                                                    to={`/product-details/${product._id}`}
+                                                    className="btn btn-outline-primary"
+                                                >
+                                                    View Details
+                                                </Link>
+                                            </div>
+                                        </Card.Body>
+                                    </Card>
+                                </Col>
+                            );
+                        })
                     ) : (
                         <Col>
                             <p>No products found.</p>

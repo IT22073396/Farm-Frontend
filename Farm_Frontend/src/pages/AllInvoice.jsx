@@ -125,22 +125,20 @@ const AllInvoices = () => {
             {loading ? <Spinner splash="Loading Invoice..." /> : (
                 (invoices.length === 0 ? <h3>No Invoice Added</h3> : (
                     <>
-                    <form className="d-flex justify-content-end align-items-center" onSubmit={handleSearchSubmit}>
-                        <input
-                            type="text"
-                            name="searchInput"
-                            id="searchInput"
-                            className="form-control my-2"
-                            style={{ width: "400px" }} // Adjust width as needed
-                            placeholder="Search Invoice"
-                            value={searchInput}
-                            onChange={(e) => setSearchInput(e.target.value)}
-                        />
-                    <Button variant="primary" type="submit" className="btn btn-info mx-2">
-                        Search
-                    </Button>
-                    </form>
-
+                        <form className="d-flex" onSubmit={handleSearchSubmit}>
+                            <input
+                                type="text"
+                                name="searchInput"
+                                id="searchInput"
+                                className="form-control my-2"
+                                placeholder="Search Invoice"
+                                value={searchInput}
+                                onChange={(e) => setSearchInput(e.target.value)}
+                            />
+                            <Button variant="primary" type="submit" className="btn btn-info mx-2">
+                                Search
+                            </Button>{' '}
+                        </form>
 
                         <p>Total No of Invoices :{invoices.length}</p>
                         <Table striped bordered hover variant="light" style={{ backgroundColor: 'white', color: 'black' }}>

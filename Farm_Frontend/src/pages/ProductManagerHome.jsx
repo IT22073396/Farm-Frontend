@@ -2,45 +2,101 @@ import { useContext, useEffect } from "react";
 import React from "react";
 import { AuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
-import Button from 'react-bootstrap/Button';
-import { Link } from "react-router-dom"; // Import Link for routing
+import { Link } from "react-router-dom";
+import { Container, Row, Col, Card, Button } from "react-bootstrap";
+import '../css/ProductManeger.css';
 
-// Import images for the functionalities
+// Import images
 import createIcon from "../assets/addProductImage.png";
 import allProductsIcon from "../assets/allProducts.jpg";
 import addLeaveIcon from "../assets/add.png";
 
-const ProductManagerHome = () =>{
+const ProductManagerHome = () => {
     const navigate = useNavigate();
-    const {user} = useContext(AuthContext);
-    
-    useEffect(()=>{
-        !user && navigate("/login", {replace:true });
-    },[]);
+    const { user } = useContext(AuthContext);
+
+    useEffect(() => {
+        !user && navigate("/login", { replace: true });
+    }, [user, navigate]);
 
     return (
-        <>
-            <div style={{ paddingLeft: '20px' }}>
-                <h2>Welcome, {user ? user.name : null}!</h2>
-                <br />
-                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
-                    {/* Display larger images for the functionalities */}
-                    <Link to="/createproducts" style={{ marginBottom: '20px', display: 'flex', alignItems: 'center' }}>
-                        <img src={createIcon} alt="Create" style={{ width: '200px', height: '200px', marginRight: '10px' }} />
-                        <Button variant="primary" style={{ fontSize: '20px' }}>Add Product</Button>
-                    </Link>
-                    <Link to="/allproducts" style={{ marginBottom: '20px', display: 'flex', alignItems: 'center' }}>
-                        <img src={allProductsIcon} alt="All Products" style={{ width: '200px', height: '200px', marginRight: '10px' }} />
-                        <Button variant="secondary" style={{ fontSize: '20px' }}>All Products</Button>
-                    </Link>
-                    <Link to="/createleave" style={{ display: 'flex', alignItems: 'center' }}>
-                        <img src={addLeaveIcon} alt="Add Leave" style={{ width: '200px', height: '200px', marginRight: '10px' }} />
-                        <Button variant="info" style={{ fontSize: '20px' }}>Add Leave</Button>
-                    </Link>
-                </div>
-            </div>
-            <br />
-        </>
+        <Container className="mt-5">
+            <h2 className="mb-4 text-center">Welcome, {user?.name}!</h2>
+            
+            <Row className="justify-content-center g-4">
+                {/* Add Product Card */}
+                <Col md={4} className="d-flex">
+                    <Card className="w-100 shadow-sm hover-effect">
+                        <div className="card-img-container">
+                            <Card.Img 
+                                variant="top" 
+                                src={createIcon} 
+                                className="card-img-fit"
+                            />
+                        </div>
+                        <Card.Body className="text-center d-flex flex-column">
+                            <Button 
+                                variant="primary" 
+                                size="lg" 
+                                className="mt-auto"
+                                as={Link} 
+                                to="/createproducts"
+                            >
+                                Add Product
+                            </Button>
+                        </Card.Body>
+                    </Card>
+                </Col>
+
+                {/* All Products Card */}
+                <Col md={4} className="d-flex">
+                    <Card className="w-100 shadow-sm hover-effect">
+                        <div className="card-img-container">
+                            <Card.Img 
+                                variant="top" 
+                                src={allProductsIcon} 
+                                className="card-img-fit"
+                            />
+                        </div>
+                        <Card.Body className="text-center d-flex flex-column">
+                            <Button 
+                                variant="secondary" 
+                                size="lg" 
+                                className="mt-auto"
+                                as={Link} 
+                                to="/allproducts"
+                            >
+                                All Products
+                            </Button>
+                        </Card.Body>
+                    </Card>
+                </Col>
+
+                {/* Add Leave Card */}
+                <Col md={4} className="d-flex">
+                    <Card className="w-100 shadow-sm hover-effect">
+                        <div className="card-img-container">
+                            <Card.Img 
+                                variant="top" 
+                                src={addLeaveIcon} 
+                                className="card-img-fit"
+                            />
+                        </div>
+                        <Card.Body className="text-center d-flex flex-column">
+                            <Button 
+                                variant="info" 
+                                size="lg" 
+                                className="mt-auto"
+                                as={Link} 
+                                to="/createleave"
+                            >
+                                Add Leave
+                            </Button>
+                        </Card.Body>
+                    </Card>
+                </Col>
+            </Row>
+        </Container>
     );
 };
 

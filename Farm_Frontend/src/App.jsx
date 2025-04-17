@@ -174,9 +174,9 @@ const App = () => {
       <Route path="/allinvoice" element={<AllInvoice></AllInvoice>} />
       <Route path="/editinvoice/:id" element={<EditInvoice></EditInvoice>}/>
       
-
-
       
+
+       
 
 
     </Switch>

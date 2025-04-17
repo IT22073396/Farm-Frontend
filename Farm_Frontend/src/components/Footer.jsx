@@ -9,11 +9,11 @@ const Footer = () => {
       <div className="container">
         <div className="row">
           <div className="col-md-3 text-left">
-           
-            <p>Farm Management </p>
+            <img src={mandriLifeLogo} alt="Mandri Life Logo" style={{ maxWidth: '100px' }} />
+            <p>At Mandri Lanka (Private) Ltd we love to hear your views about our Mandri products. We wish to know how you feel about our products, your suggestion and complain.</p>
           </div>
           <div className="col-md-3">
-            <p>Farm Management</p>
+            <p>Mandri Life</p>
             <ul className="list-unstyled">
               <li>Home</li>
               <li>Vision & Mission</li>
@@ -23,24 +23,23 @@ const Footer = () => {
               <li>Blog</li>
             </ul>
           </div>
-          
           <div className="col-md-3">
             <p>Products</p>
             <ul className="list-unstyled">
-              <li>Milk</li>
-              <li>Dairy</li>
-              
+              <li>Spices</li>
+              <li>Essential Oil</li>
+              <li>Herbal Products</li>
              <Link to="/createfeedbacks"><p>Feedback</p></Link> 
             </ul>
           </div>
           <div className="col-md-3">
             <p>Contact us</p>
             <p>+94 77 171 3375</p>
-            <p>farmmangement@gmail.com</p>
-            <p>Farm management pvt ltd, No 227/13 A, Nirmana Mw, Nawala Road, Nugegoda, Sri Lanka</p>
+            <p>info@mandrilife.com</p>
+            <p>Mandri Lanka Private Limited, No 227/13 A, Nirmana Mw, Nawala Road, Nugegoda, Sri Lanka</p>
           </div>
         </div>
-        <p>&copy; {new Date().getFullYear()} Farm Management. All rights reserved.</p>
+        <p>&copy; {new Date().getFullYear()} Mandri Life. All rights reserved.</p>
       </div>
     </footer>
   );

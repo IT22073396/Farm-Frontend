@@ -1,0 +1,32 @@
+/* Ensure consistent card height and image fitting */
+.card-img-container {
+    height: 200px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f8f9fa; /* Fallback if image doesn't load */
+}
+
+.card-img-fit {
+    width: 30%;
+    height: 100%;
+    object-fit: scale-down; /* Crop to fill */
+    transition: transform 0.3s ease;
+}
+
+/* Hover effects */
+.hover-effect:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1) !important;
+}
+
+.hover-effect:hover .card-img-fit {
+    transform: scale(1.05);
+}
+
+/* Button styling */
+.btn {
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}

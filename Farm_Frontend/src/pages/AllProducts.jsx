@@ -1,229 +1,309 @@
-import { useContext, useEffect, useState } from "react";
-import { Button, Table, Modal, Spinner, Alert } from "react-bootstrap";
+import { useContext, useEffect, useState, useMemo } from "react";
+import { Button, Table, Modal, Spinner, Form, Badge, Stack } from 'react-bootstrap';
 import { Link } from "react-router-dom";
 import { PDFDownloadLink } from '@react-pdf/renderer';
 import ToastContext from "../context/ToastContext";
 import ProductPDFReport from './ProductPDFReport';
 
 const AllProducts = () => {
-    const { toast } = useContext(ToastContext);
-    const [showModal, setShowModal] = useState(false);
-    const [loading, setLoading] = useState(true);
-    const [products, setProducts] = useState([]);
-    const [searchInput, setSearchInput] = useState("");
-    const [error, setError] = useState(null);
+  const { toast } = useContext(ToastContext);
+  const [showModal, setShowModal] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [products, setProducts] = useState([]);
+  const [searchInput, setSearchInput] = useState("");
+  const [sortConfig, setSortConfig] = useState({ 
+    key: 'productId', 
+    direction: 'asc' 
+  });
 
-    const fetchProducts = async () => {
-        setLoading(true);
-        setError(null);
-        try {
-            const res = await fetch('http://localhost:4000/api/products', {
-                method: "GET",
-                headers: {
-                    "Authorization": `Bearer ${localStorage.getItem("token")}`,
-                }
-            });
-            
-            const data = await res.json();
-            
-            if (!res.ok) {
-                throw new Error(data.error || "Failed to fetch products");
-            }
-
-            // Handle both array response and object with products property
-            const receivedProducts = Array.isArray(data) ? data : data.products || data.data || [];
-            setProducts(receivedProducts);
-            
-        } catch (err) {
-            console.error("Fetch error:", err);
-            setError(err.message);
-            toast.error(err.message);
-        } finally {
-            setLoading(false);
+  // Fetch products from API
+  const fetchProducts = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch('http://localhost:4000/api/products', {
+        method: "GET",
+        headers: {
+          "Authorization": `Bearer ${localStorage.getItem("token")}`,
         }
-    };
+      });
+      const result = await res.json();
+      if (!result.error) {
+        setProducts(result.products || []);
+      } else {
+        toast.error(result.error);
+      }
+    } catch (err) {
+      toast.error("Failed to fetch products");
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    useEffect(() => {
-        fetchProducts();
-    }, []);
+  useEffect(() => {
+    fetchProducts();
+  }, []);
 
-    const deleteProduct = async (id) => {
-        if (window.confirm("Are you sure you want to delete this product?")) {
-            try {
-                const res = await fetch(`http://localhost:4000/api/products/${id}`, {
-                    method: "DELETE",
-                    headers: {
-                        "Authorization": `Bearer ${localStorage.getItem("token")}`,
-                    }
-                });
-                
-                const result = await res.json();
-                
-                if (!res.ok) {
-                    throw new Error(result.error || "Delete failed");
-                }
+  // Sorting functionality
+  const requestSort = (key) => {
+    let direction = 'asc';
+    if (sortConfig.key === key && sortConfig.direction === 'asc') {
+      direction = 'desc';
+    }
+    setSortConfig({ key, direction });
+  };
 
-                toast.success("Product deleted");
-                fetchProducts(); // Refresh the list
-            } catch (err) {
-                toast.error(err.message);
-            }
+  // Sort and filter products
+  const sortedAndFilteredProducts = useMemo(() => {
+    let filtered = [...products];
+    
+    // Apply search filter
+    if (searchInput) {
+      filtered = filtered.filter(product => 
+        product.name.toLowerCase().includes(searchInput.toLowerCase())
+      );
+    }
+    
+    // Apply sorting
+    if (sortConfig.key) {
+      filtered.sort((a, b) => {
+        if (a[sortConfig.key] < b[sortConfig.key]) {
+          return sortConfig.direction === 'asc' ? -1 : 1;
         }
-    };
+        if (a[sortConfig.key] > b[sortConfig.key]) {
+          return sortConfig.direction === 'asc' ? 1 : -1;
+        }
+        return 0;
+      });
+    }
+    
+    return filtered;
+  }, [products, searchInput, sortConfig]);
 
-    const filteredProducts = products.filter(product =>
-        product?.name?.toLowerCase().includes(searchInput.toLowerCase())
-    );
+  // Delete product
+  const deleteProduct = async (id) => {
+    if (window.confirm("Are you sure you want to delete this product?")) {
+      try {
+        const res = await fetch(`http://localhost:4000/api/products/${id}`, {
+          method: "DELETE",
+          headers: {
+            "Authorization": `Bearer ${localStorage.getItem("token")}`,
+          }
+        });
+        const result = await res.json();
+        if (!result.error) {
+          toast.success("Product deleted successfully");
+          setShowModal(false);
+          fetchProducts();
+        } else {
+          toast.error(result.error);
+        }
+      } catch (err) {
+        toast.error("Failed to delete product");
+        console.error(err);
+      }
+    }
+  };
 
-    return (
-        <div className="container mt-4">
-            <h2>Product Inventory</h2>
-            
-            <div className="mb-3 d-flex">
-                <input
-                    type="text"
-                    className="form-control"
-                    placeholder="Search products..."
-                    value={searchInput}
-                    onChange={(e) => setSearchInput(e.target.value)}
-                />
-                <Button 
-                    variant="secondary" 
-                    onClick={() => setSearchInput("")}
-                    className="ms-2"
-                >
-                    Clear
-                </Button>
-            </div>
+  // Handle search submit
+  const handleSearchSubmit = (event) => {
+    event.preventDefault();
+    // Filtering is handled in the memoized sortedAndFilteredProducts
+  };
 
-            {loading ? (
-                <div className="text-center">
-                    <Spinner animation="border" />
-                    <p>Loading products...</p>
-                </div>
-            ) : error ? (
-                <Alert variant="danger">
-                    Error: {error}
-                    <Button variant="primary" onClick={fetchProducts} className="ms-3">
-                        Retry
-                    </Button>
-                </Alert>
-            ) : filteredProducts.length === 0 ? (
-                <Alert variant="info">
-                    {searchInput ? "No matching products found" : "No products available"}
-                </Alert>
-            ) : (
-                <>
-                    <p>Showing {filteredProducts.length} products</p>
-                    <Table striped bordered hover responsive>
-                        <thead className="table-dark">
-                            <tr>
-                                <th>Name</th>
-                                <th>ID</th>
-                                <th>Qty</th>
-                                <th>Price</th>
-                                <th>Image</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {filteredProducts.map(product => (
-                                <tr key={product._id}>
-                                    <td>{product.name}</td>
-                                    <td>{product.productId}</td>
-                                    <td>{product.quantity}</td>
-                                    <td>LKR {product.price}</td>
-                                    <td>
-                                        {product.imageUrl && (
-                                            <img
-                                                src={`http://localhost:4000${product.imageUrl}`}
-                                                alt={product.name}
-                                                style={{ width: '80px', height: 'auto' }}
-                                                className="img-thumbnail"
-                                            />
-                                        )}
-                                    </td>
-                                    <td>
-                                        <Button
-                                            variant="info"
-                                            size="sm"
-                                            onClick={() => setShowModal(product)}
-                                        >
-                                            View
-                                        </Button>
-                                        <Link
-                                            to={`/editproducts/${product._id}`}
-                                            className="btn btn-warning btn-sm ms-2"
-                                        >
-                                            Edit
-                                        </Link>
-                                        <Button
-                                            variant="danger"
-                                            size="sm"
-                                            className="ms-2"
-                                            onClick={() => deleteProduct(product._id)}
-                                        >
-                                            Delete
-                                        </Button>
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </Table>
+  // Reset search
+  const resetSearch = () => {
+    setSearchInput("");
+  };
 
-                    <div className="mt-3">
-                        <PDFDownloadLink 
-                            document={<ProductPDFReport products={filteredProducts} />} 
-                            fileName="products_report.pdf"
-                            className="btn btn-primary"
-                        >
-                            {({ loading }) => (loading ? 'Generating PDF...' : 'Download PDF Report')}
-                        </PDFDownloadLink>
-                    </div>
-                </>
+  return (
+    <div className="container-fluid py-4">
+      <div className="d-flex justify-content-between align-items-center mb-4">
+        <h2>Product Management</h2>
+        <Badge bg="secondary">
+          Total Products: {products.length}
+        </Badge>
+      </div>
+
+      <div className="d-flex justify-content-between align-items-center mb-4">
+        <Form onSubmit={handleSearchSubmit} className="flex-grow-1 me-3">
+          <div className="input-group">
+            <Form.Control
+              type="text"
+              placeholder="Search products by name..."
+              value={searchInput}
+              onChange={(e) => setSearchInput(e.target.value)}
+            />
+            <Button variant="primary" type="submit">
+              Search
+            </Button>
+            {searchInput && (
+              <Button variant="outline-secondary" onClick={resetSearch}>
+                Clear
+              </Button>
             )}
+          </div>
+        </Form>
 
-            {/* Product Details Modal */}
-            <Modal show={!!showModal} onHide={() => setShowModal(false)} size="lg">
-                <Modal.Header closeButton>
-                    <Modal.Title>{showModal?.name} Details</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    {showModal && (
-                        <div className="row">
-                            <div className="col-md-6">
-                                <p><strong>Description:</strong> {showModal.description}</p>
-                                <p><strong>Product ID:</strong> {showModal.productId}</p>
-                                <p><strong>Quantity:</strong> {showModal.quantity}</p>
-                                <p><strong>Price:</strong> LKR {showModal.price}</p>
-                            </div>
-                            <div className="col-md-6">
-                                {showModal.imageUrl && (
-                                    <img
-                                        src={`http://localhost:4000${showModal.imageUrl}`}
-                                        alt={showModal.name}
-                                        className="img-fluid rounded"
-                                        style={{ maxHeight: "300px" }}
-                                    />
-                                )}
-                            </div>
-                        </div>
+        <Stack direction="horizontal" gap={2}>
+          <Button 
+            variant="outline-secondary" 
+            onClick={fetchProducts}
+            disabled={loading}
+          >
+            {loading ? 'Refreshing...' : 'Refresh'}
+          </Button>
+          <PDFDownloadLink 
+            document={<ProductPDFReport products={sortedAndFilteredProducts} />} 
+            fileName="products_report.pdf"
+            className="btn btn-primary"
+          >
+            {({ loading }) => loading ? 'Generating PDF...' : 'Export PDF'}
+          </PDFDownloadLink>
+          <Link to="/createproducts" className="btn btn-success">Add New Product</Link>
+        </Stack>
+      </div>
+
+      <div className="table-responsive">
+        <Table striped bordered hover>
+          <thead>
+            <tr>
+              <th 
+                onClick={() => requestSort('productId')}
+                style={{ cursor: 'pointer' }}
+                className="sortable-header"
+              >
+                Product ID
+                {sortConfig.key === 'productId' && (
+                  <span className="ms-2">
+                    {sortConfig.direction === 'asc' ? '↑' : '↓'}
+                  </span>
+                )}
+              </th>
+              <th>Name</th>
+              <th>Image</th>
+              <th>Price (LKR)</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            {loading ? (
+              <tr>
+                <td colSpan="5" className="text-center py-4">
+                  <Spinner animation="border" />
+                  <p className="mt-2">Loading products...</p>
+                </td>
+              </tr>
+            ) : sortedAndFilteredProducts.length === 0 ? (
+              <tr>
+                <td colSpan="5" className="text-center py-4 text-muted">
+                  {searchInput ? 
+                    "No products match your search criteria" : 
+                    "No products available"}
+                </td>
+              </tr>
+            ) : (
+              sortedAndFilteredProducts.map((product) => (
+                <tr 
+                  key={product._id}
+                  onClick={() => {
+                    setSelectedProduct(product);
+                    setShowModal(true);
+                  }}
+                  style={{ cursor: 'pointer' }}
+                >
+                  <td>{product.productId}</td>
+                  <td>{product.name}</td>
+                  <td>
+                    {product.imageUrl && (
+                      <img 
+                        src={`http://localhost:4000/${product.imageUrl}`} 
+                        alt={product.name}
+                        style={{ 
+                          width: '60px', 
+                          height: '60px', 
+                          objectFit: 'cover' 
+                        }}
+                        className="img-thumbnail"
+                      />
                     )}
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={() => setShowModal(false)}>
-                        Close
-                    </Button>
-                    <Link
-                        to={`/editproducts/${showModal?._id}`}
-                        className="btn btn-primary"
-                    >
-                        Edit Product
-                    </Link>
-                </Modal.Footer>
-            </Modal>
-        </div>
-    );
+                  </td>
+                  <td>{product.price.toLocaleString()}</td>
+                  <td className="text-truncate" style={{ maxWidth: '200px' }}>
+                    {product.description}
+                  </td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </Table>
+      </div>
+
+      {/* Product Details Modal */}
+      <Modal show={showModal} onHide={() => setShowModal(false)} size="lg">
+        <Modal.Header closeButton>
+          <Modal.Title>
+            Product Details: {selectedProduct?.name}
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {selectedProduct && (
+            <div className="row">
+              <div className="col-md-4 text-center">
+                {selectedProduct.imageUrl && (
+                  <img 
+                    src={`http://localhost:4000/${selectedProduct.imageUrl}`} 
+                    alt={selectedProduct.name}
+                    className="img-fluid rounded"
+                    style={{ maxHeight: '200px' }}
+                  />
+                )}
+              </div>
+              <div className="col-md-8">
+                <div className="mb-3">
+                  <h5>Basic Information</h5>
+                  <hr className="mt-1" />
+                  <p><strong>Product ID:</strong> {selectedProduct.productId}</p>
+                  <p><strong>Name:</strong> {selectedProduct.name}</p>
+                  <p><strong>Price:</strong> LKR {selectedProduct.price.toLocaleString()}</p>
+                  <p>
+                    <strong>Quantity:</strong> 
+                    <span className={selectedProduct.quantity <= 5 ? 'text-danger fw-bold ms-2' : 'ms-2'}>
+                      {selectedProduct.quantity}
+                    </span>
+                  </p>
+                </div>
+                <div>
+                  <h5>Description</h5>
+                  <hr className="mt-1" />
+                  <p>{selectedProduct.description}</p>
+                </div>
+              </div>
+            </div>
+          )}
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowModal(false)}>
+            Close
+          </Button>
+          <Link 
+            to={`/editproducts/${selectedProduct?._id}`}
+            className="btn btn-primary"
+            state={{ product: selectedProduct }}
+          >
+            Edit Product
+          </Link>
+          <Button 
+            variant="danger" 
+            onClick={() => deleteProduct(selectedProduct?._id)}
+          >
+            Delete Product
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    </div>
+  );
 };
 
 export default AllProducts;

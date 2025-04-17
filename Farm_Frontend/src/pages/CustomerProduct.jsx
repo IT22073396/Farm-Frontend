@@ -141,7 +141,7 @@ const CustomerProduct = () => {
                                         </div>
                                         <Card.Body className="d-flex flex-column card-body-flex">
                                             <Card.Title className="product-title">{product.name}</Card.Title>
-                                            <Card.Text className="product-price">Price: ${product.price}</Card.Text>
+                                            <Card.Text className="product-price">Price: LKR {product.price}</Card.Text>
                                             <Form.Group controlId={`quantity-${product._id}`} className="mb-3">
                                                 <Form.Label>Quantity</Form.Label>
                                                 <Form.Control

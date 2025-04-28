@@ -147,8 +147,8 @@ const AllFinancials = () => {
                                     <tr>
                                         <th>ID</th>
                                         <th>Day Duration</th>
-                                        <th>Total Sales(USD)</th>
-                                        <th>Total Cost(USD)</th>
+                                        <th>Total Sales(LKR)</th>
+                                        <th>Total Cost(LKR)</th>
                                         <th>Count of Sales</th>
                                     </tr>
                                 </thead>
@@ -180,8 +180,8 @@ const AllFinancials = () => {
                                 <>
                                     <p><strong>ID:</strong> {selectedFinancial.id}</p>
                                     <p><strong>Day Duration:</strong> {selectedFinancial.dduration}</p>
-                                    <p><strong>Total Sales(USD):</strong> {selectedFinancial.tsale}</p>
-                                    <p><strong>Total Cost(USD):</strong> {selectedFinancial.tcost}</p>
+                                    <p><strong>Total Sales(LKR):</strong> {selectedFinancial.tsale}</p>
+                                    <p><strong>Total Cost(LKR):</strong> {selectedFinancial.tcost}</p>
                                     <p><strong>Count of Product Sales:</strong> {selectedFinancial.cofPsales}</p>
                                 </>
                             )}

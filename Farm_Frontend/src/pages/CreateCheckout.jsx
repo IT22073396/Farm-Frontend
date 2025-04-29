@@ -281,32 +281,100 @@ const CreateCheckout = () => {
 
 
 
-    return (
-        <>
-            <h2>Checkout Details</h2>
+  return (
+    <div style={{
+        minHeight: "100vh",
+        backgroundColor: "#f2f2f2",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        padding: "20px"
+    }}>
+        <div style={{
+            width: "100%",
+            maxWidth: "600px",
+            backgroundColor: "#ffffff",
+            padding: "40px 30px",
+            borderRadius: "12px",
+            boxShadow: "0 6px 20px rgba(0, 0, 0, 0.1)",
+            fontFamily: "'Poppins', sans-serif"
+        }}>
+            <h2 style={{
+                textAlign: "center",
+                fontWeight: "600",
+                fontSize: "30px",
+                marginBottom: "30px",
+                olor: "#333",
+                fontStyle: "italic",
+                textDecoration: "underline"
+        }}>
+    Checkout Details
+</h2>
+
+
             <Form onSubmit={formik.handleSubmit}>
                 <Form.Group className="mb-3">
-                    <Form.Label>Customer Name</Form.Label>
-                    <Form.Control id="name" name="name" type="text"
-                        placeholder="Enter Customer Name" onKeyPress = {handleKeyPress} value={formik.values.name} onChange={formik.handleChange} onBlur={formik.handleBlur} isInvalid={formik.touched.name && formik.errors.name} />
-                                   
+                    <Form.Label style={{ fontWeight: "500", marginBottom: "5px" }}>Customer Name</Form.Label>
+                    <Form.Control
+                        id="name"
+                        name="name"
+                        type="text"
+                        placeholder="Enter Customer Name"
+                        onKeyPress={handleKeyPress}
+                        value={formik.values.name}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        isInvalid={formik.touched.name && formik.errors.name}
+                        style={{ borderRadius: "8px" }}
+                    />
                     <Form.Control.Feedback type="invalid">{formik.errors.name}</Form.Control.Feedback>
                 </Form.Group>
+
                 <Form.Group className="mb-3" controlId="address">
-                    <Form.Label>Customer Address</Form.Label>
-                    <Form.Control id="address" name="address" type="text"
-                        placeholder="Enter Customer Address" value={formik.values.address} onChange={formik.handleChange} onBlur={formik.handleBlur} isInvalid={formik.touched.address && formik.errors.address} />
+                    <Form.Label style={{ fontWeight: "500", marginBottom: "5px" }}>Customer Address</Form.Label>
+                    <Form.Control
+                        id="address"
+                        name="address"
+                        type="text"
+                        placeholder="Enter Customer Address"
+                        value={formik.values.address}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        isInvalid={formik.touched.address && formik.errors.address}
+                        style={{ borderRadius: "8px" }}
+                    />
                     <Form.Control.Feedback type="invalid">{formik.errors.address}</Form.Control.Feedback>
                 </Form.Group>
+
                 <Form.Group className="mb-3" controlId="city">
-                    <Form.Label>City</Form.Label>
-                    <Form.Control id="city" name="city" type="text"
-                        placeholder="Enter City" onKeyPress = {handleKeyPress} value={formik.values.city} onChange={formik.handleChange} onBlur={formik.handleBlur} isInvalid={formik.touched.city && formik.errors.city} />
+                    <Form.Label style={{ fontWeight: "500", marginBottom: "5px" }}>City</Form.Label>
+                    <Form.Control
+                        id="city"
+                        name="city"
+                        type="text"
+                        placeholder="Enter City"
+                        onKeyPress={handleKeyPress}
+                        value={formik.values.city}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        isInvalid={formik.touched.city && formik.errors.city}
+                        style={{ borderRadius: "8px" }}
+                    />
                     <Form.Control.Feedback type="invalid">{formik.errors.city}</Form.Control.Feedback>
                 </Form.Group>
+
                 <Form.Group className="mb-3" controlId="country">
-                    <Form.Label>Country</Form.Label>
-                    <Form.Control as="select" id="country" name="country" value={formik.values.country} onChange={handleCountryChange} onBlur={formik.handleBlur} isInvalid={formik.touched.country && formik.errors.country}>
+                    <Form.Label style={{ fontWeight: "500", marginBottom: "5px" }}>Country</Form.Label>
+                    <Form.Control
+                        as="select"
+                        id="country"
+                        name="country"
+                        value={formik.values.country}
+                        onChange={handleCountryChange}
+                        onBlur={formik.handleBlur}
+                        isInvalid={formik.touched.country && formik.errors.country}
+                        style={{ borderRadius: "8px" }}
+                    >
                         <option value="">Select Country</option>
                         {Object.keys(countriesWithPhoneCodes).map((country, index) => (
                             <option key={index} value={country}>{country}</option>
@@ -314,30 +382,79 @@ const CreateCheckout = () => {
                     </Form.Control>
                     <Form.Control.Feedback type="invalid">{formik.errors.country}</Form.Control.Feedback>
                 </Form.Group>
+
                 <Form.Group className="mb-3" controlId="zip">
-                    <Form.Label>ZIP</Form.Label>
-                    <Form.Control id="zip" name="zip" type="number"
-                        placeholder="Enter zip" value={formik.values.zip} onChange={formik.handleChange} onBlur={formik.handleBlur} isInvalid={formik.touched.zip && formik.errors.zip} />
+                    <Form.Label style={{ fontWeight: "500", marginBottom: "5px" }}>ZIP</Form.Label>
+                    <Form.Control
+                        id="zip"
+                        name="zip"
+                        type="number"
+                        placeholder="Enter zip"
+                        value={formik.values.zip}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        isInvalid={formik.touched.zip && formik.errors.zip}
+                        style={{ borderRadius: "8px" }}
+                    />
                     <Form.Control.Feedback type="invalid">{formik.errors.zip}</Form.Control.Feedback>
                 </Form.Group>
+
                 <Form.Group className="mb-3" controlId="phone">
-                    <Form.Label>Phone</Form.Label>
-                    <Form.Control id="phone" name="phone" type="tel"
-                        placeholder="Enter phone" onKeyPress = {handleKeyPress1} value={formik.values.phone} onChange={formik.handleChange} onBlur={formik.handleBlur} isInvalid={formik.touched.phone && formik.errors.phone} />
+                    <Form.Label style={{ fontWeight: "500", marginBottom: "5px" }}>Phone</Form.Label>
+                    <Form.Control
+                        id="phone"
+                        name="phone"
+                        type="tel"
+                        placeholder="Enter phone"
+                        onKeyPress={handleKeyPress1}
+                        value={formik.values.phone}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        isInvalid={formik.touched.phone && formik.errors.phone}
+                        style={{ borderRadius: "8px" }}
+                    />
                     <Form.Control.Feedback type="invalid">{formik.errors.phone}</Form.Control.Feedback>
                 </Form.Group>
+
                 <Form.Group className="mb-3" controlId="email">
-                    <Form.Label>Email</Form.Label>
-                    <Form.Control id="email" name="email"
-                        placeholder="Enter email" value={formik.values.email} onChange={formik.handleChange} onBlur={formik.handleBlur} isInvalid={formik.touched.email && formik.errors.email} />
+                    <Form.Label style={{ fontWeight: "500", marginBottom: "5px" }}>Email</Form.Label>
+                    <Form.Control
+                        id="email"
+                        name="email"
+                        placeholder="Enter email"
+                        value={formik.values.email}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        isInvalid={formik.touched.email && formik.errors.email}
+                        style={{ borderRadius: "8px" }}
+                    />
                     <Form.Control.Feedback type="invalid">{formik.errors.email}</Form.Control.Feedback>
                 </Form.Group>
-                <Button id="btn" name="submit" variant="primary" type="submit">
+
+                <Button
+                    id="btn"
+                    name="submit"
+                    variant="warning"
+                    type="submit"
+                    style={{
+                        width: "100%",
+                        backgroundColor: "#ff6a00",
+                        borderColor: "#ff6a00",
+                        borderRadius: "8px",
+                        fontSize: "18px",
+                        padding: "12px 0",
+                        fontWeight: "600",
+                        marginTop: "10px"
+                    }}
+                >
                     Place Order
                 </Button>
             </Form>
-        </>
-    );
+        </div>
+    </div>
+);
+
+
 };
 
 export default CreateCheckout;

@@ -31,7 +31,7 @@ const CustomerHome = () =>{
     return (
         <div style={{ marginTop: '100px', display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
             <div style={{ display: 'flex', alignItems: 'center' }}>
-                <img src="/src/assets/homelogo.jpg" alt="Home Logo" style={{ width: '900px', marginRight: '20px' }} />
+                <img src="/src/assets/home1.jpg" alt="Home Logo" style={{ width: '900px', marginRight: '20px' }} />
                 <div>
                     <h2 style={{ color: 'orange', fontWeight: 'bold' }}>Our Business</h2>
                     <p style={{ fontSize: '18px' }}>Sri Lanka is naturally gifted for producing the best class Cinnamon, Black Pepper and Essential Oils. Cinnamon from Sri Lanka is commonly known as Ceylon Cinnamon. At Mandri Lanka, we provide the authentic Ceylon Cinnamon and Black Pepper at its pure grade to the world. We work with several known growers, hand pick the harvest from the fields and process at dedicated Cinnamon and Pepper Processing Centres. We do this to ensure that the quality is maintained across all channels until it reaches our valuable customers. We focus on Ceylon Cinnamon, Black Pepper Corn and Essential Oils. We ensure to stamp on our purity and expertise for what we offer you. This is our philosophy.</p>

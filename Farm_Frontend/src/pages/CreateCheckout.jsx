@@ -299,22 +299,33 @@ const CreateCheckout = () => {
             boxShadow: "0 6px 20px rgba(0, 0, 0, 0.1)",
             fontFamily: "'Poppins', sans-serif"
         }}>
-            <h2 style={{
-                textAlign: "center",
+            <h2
+            style={{
+                textAlign: "center", // Aligns the text to the center
                 fontWeight: "600",
                 fontSize: "30px",
-                marginBottom: "30px",
-                olor: "#333",
+                marginBottom: "3px",
+                color: "rgb(255, 255, 255)", // Text color white for contrast
                 fontStyle: "italic",
-                textDecoration: "underline"
-        }}>
-    Checkout Details
-</h2>
-
+                textDecoration: "underline",
+                padding: "10px",
+                backgroundColor: "#f5a623", // Added background color (you can change this)
+                borderRadius: "10px",
+                boxShadow: "0 4px 12px rgba(0, 0, 0, 0.15)",
+                display: "inline-block",
+                width: "100%", // Ensures full width for centering
+                position: "relative",
+                top: "50%", // Centers vertically
+                transform: "translateY(-50%)", // Centers vertically with translation
+                background: "linear-gradient(90deg, #ff8a00, #e52e71)",
+            }}
+            >
+            Checkout Details
+            </h2>
 
             <Form onSubmit={formik.handleSubmit}>
                 <Form.Group className="mb-3">
-                    <Form.Label style={{ fontWeight: "500", marginBottom: "5px" }}>Customer Name</Form.Label>
+                    <Form.Label style={{ fontWeight: "500", marginBottom: "5px" }}>Customer Name :</Form.Label>
                     <Form.Control
                         id="name"
                         name="name"
@@ -331,7 +342,7 @@ const CreateCheckout = () => {
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="address">
-                    <Form.Label style={{ fontWeight: "500", marginBottom: "5px" }}>Customer Address</Form.Label>
+                    <Form.Label style={{ fontWeight: "500", marginBottom: "5px" }}>Customer Address :</Form.Label>
                     <Form.Control
                         id="address"
                         name="address"
@@ -347,7 +358,7 @@ const CreateCheckout = () => {
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="city">
-                    <Form.Label style={{ fontWeight: "500", marginBottom: "5px" }}>City</Form.Label>
+                    <Form.Label style={{ fontWeight: "500", marginBottom: "5px" }}>City : </Form.Label>
                     <Form.Control
                         id="city"
                         name="city"
@@ -364,7 +375,7 @@ const CreateCheckout = () => {
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="country">
-                    <Form.Label style={{ fontWeight: "500", marginBottom: "5px" }}>Country</Form.Label>
+                    <Form.Label style={{ fontWeight: "500", marginBottom: "5px" }}>Country :</Form.Label>
                     <Form.Control
                         as="select"
                         id="country"
@@ -384,7 +395,7 @@ const CreateCheckout = () => {
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="zip">
-                    <Form.Label style={{ fontWeight: "500", marginBottom: "5px" }}>ZIP</Form.Label>
+                    <Form.Label style={{ fontWeight: "500", marginBottom: "5px" }}>ZIP : </Form.Label>
                     <Form.Control
                         id="zip"
                         name="zip"
@@ -400,7 +411,7 @@ const CreateCheckout = () => {
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="phone">
-                    <Form.Label style={{ fontWeight: "500", marginBottom: "5px" }}>Phone</Form.Label>
+                    <Form.Label style={{ fontWeight: "500", marginBottom: "5px" }}>Phone : </Form.Label>
                     <Form.Control
                         id="phone"
                         name="phone"
@@ -417,7 +428,7 @@ const CreateCheckout = () => {
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="email">
-                    <Form.Label style={{ fontWeight: "500", marginBottom: "5px" }}>Email</Form.Label>
+                    <Form.Label style={{ fontWeight: "500", marginBottom: "5px" }}>Email : </Form.Label>
                     <Form.Control
                         id="email"
                         name="email"
@@ -438,17 +449,22 @@ const CreateCheckout = () => {
                     type="submit"
                     style={{
                         width: "100%",
-                        backgroundColor: "#ff6a00",
-                        borderColor: "#ff6a00",
-                        borderRadius: "8px",
+                        background: "linear-gradient(90deg, #ff8a00, #e52e71)",
+                        border: "none",
+                        borderRadius: "12px",
                         fontSize: "18px",
-                        padding: "12px 0",
-                        fontWeight: "600",
-                        marginTop: "10px"
+                        padding: "14px 0",
+                        fontWeight: "700",
+                        marginTop: "20px",
+                        color: "#fff",
+                        transition: "all 0.3s ease",
                     }}
-                >
+                    onMouseEnter={(e) => e.target.style.opacity = "0.9"}
+                    onMouseLeave={(e) => e.target.style.opacity = "1"}
+                    >
                     Place Order
-                </Button>
+                    </Button>
+
             </Form>
         </div>
     </div>

@@ -67,10 +67,24 @@ const CartPage = () => {
             <h2
                 className="fw-bold fst-italic text-decoration-underline"
                 style={{
+                    textAlign: "center", // Aligns the text to the center
+                    fontWeight: "600",
                     fontSize: "30px",
-                    color: "#ff5722",
-                    textAlign: "center",
-                    marginBottom: "30px"
+                    marginBottom: "3px",
+                    color: "rgb(255, 255, 255)", // Text color white for contrast
+                    fontStyle: "italic",
+                    textDecoration: "underline",
+                    padding: "10px",
+                    backgroundColor: "#f5a623", // Added background color (you can change this)
+                    borderRadius: "10px",
+                    boxShadow: "0 4px 12px rgba(0, 0, 0, 0.15)",
+                    display: "inline-block",
+                    width: "40%", // Ensures full width for centering
+                    position: "relative",
+                    top: "50%", // Centers vertically
+                    transform: "translateY(-50%)", // Centers vertically with translation
+                    background: "linear-gradient(90deg, #ff8a00, #e52e71)",
+
                 }}
             >
                 Your Cart
@@ -134,7 +148,7 @@ const CartPage = () => {
                                         color: "#e53935",
                                         fontWeight: "bold"
                                     }}>
-                                        ${item.price * item.quantity}
+                                        LKR : {item.price * item.quantity}
                                     </span>
                                     <Button
                                         variant="danger"
@@ -158,7 +172,7 @@ const CartPage = () => {
                         fontWeight: "bold",
                         marginTop: "20px"
                     }}>
-                        Total Price: ${getTotalPrice()}
+                        Total Price: LKR : {getTotalPrice()}
                     </p>
     
                     <Button

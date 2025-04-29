@@ -56,45 +56,129 @@ const CartPage = () => {
     };
 
     return (
-        <div className="container">
-            <h2>Your Cart</h2>
+        <div style={{
+            padding: "40px 20px",
+            backgroundColor: "#f5f5f5",
+            minHeight: "100vh",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center"
+        }}>
+            <h2
+                className="fw-bold fst-italic text-decoration-underline"
+                style={{
+                    fontSize: "30px",
+                    color: "#ff5722",
+                    textAlign: "center",
+                    marginBottom: "30px"
+                }}
+            >
+                Your Cart
+            </h2>
+    
             {loading ? (
-                <p>Loading...</p>
+                <p style={{
+                    fontSize: "22px",
+                    color: "#888"
+                }}>
+                    Loading...
+                </p>
             ) : (
                 <>
-                    <ListGroup>
+                    <ListGroup style={{
+                        width: "100%",
+                        maxWidth: "500px"
+                    }}>
                         {cart.map((item) => (
-                            <ListGroup.Item key={item.productId}>
-                                <span>{item.name}</span>
-                                <Form.Group controlId={`quantity-${item.productId}`} className="ms-2">
+                            <ListGroup.Item
+                                key={item.productId}
+                                className="d-flex flex-column align-items-start"
+                                style={{
+                                    background: "#fff",
+                                    border: "1px solid #ddd",
+                                    borderRadius: "10px",
+                                    marginBottom: "20px",
+                                    padding: "20px",
+                                    boxShadow: "0px 4px 10px rgba(0,0,0,0.05)",
+                                    transition: "transform 0.2s, box-shadow 0.2s"
+                                }}
+                            >
+                                <span style={{
+                                    fontSize: "18px",
+                                    color: "#333"
+                                }}>
+                                    <strong>{item.name}</strong>
+                                </span>
+    
+                                <Form.Group
+                                    controlId={`quantity-${item.productId}`}
+                                    className="my-2 w-100"
+                                >
                                     <Form.Label>Quantity</Form.Label>
                                     <Form.Control
                                         type="number"
                                         value={item.quantity}
                                         min="1"
                                         onChange={(e) => updateQuantity(item.productId, parseInt(e.target.value))}
+                                        style={{
+                                            marginTop: "10px",
+                                            padding: "5px 10px",
+                                            fontSize: "16px"
+                                        }}
                                     />
                                 </Form.Group>
-                                <span>
-                                    ${item.price * item.quantity}
+    
+                                <div className="d-flex justify-content-between align-items-center w-100 mt-2" style={{ marginTop: "15px" }}>
+                                    <span style={{
+                                        fontSize: "18px",
+                                        color: "#e53935",
+                                        fontWeight: "bold"
+                                    }}>
+                                        ${item.price * item.quantity}
+                                    </span>
                                     <Button
                                         variant="danger"
                                         size="sm"
-                                        className="ms-2"
                                         onClick={() => removeFromCart(item.productId)}
+                                        style={{
+                                            backgroundColor: "#ff1744",
+                                            border: "none"
+                                        }}
                                     >
                                         Remove
                                     </Button>
-                                </span>
+                                </div>
                             </ListGroup.Item>
                         ))}
                     </ListGroup>
-                    <p>Total Price: ${getTotalPrice()}</p>
-                    <Button variant="success" onClick={handleBuy}>Buy</Button>
+    
+                    <p style={{
+                        fontSize: "20px",
+                        color: "#000",
+                        fontWeight: "bold",
+                        marginTop: "20px"
+                    }}>
+                        Total Price: ${getTotalPrice()}
+                    </p>
+    
+                    <Button
+                        variant="success"
+                        onClick={handleBuy}
+                        style={{
+                            marginTop: "20px",
+                            width: "200px",
+                            fontSize: "18px",
+                            backgroundColor: "#43a047",
+                            border: "none"
+                        }}
+                    >
+                        Buy
+                    </Button>
                 </>
             )}
         </div>
     );
-};
+    
+};    
 
 export default CartPage;

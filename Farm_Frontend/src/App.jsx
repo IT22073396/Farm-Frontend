@@ -83,6 +83,11 @@ import InventoryInbox from "./pages/InventoryInbox";
 import TransportInbox from "./pages/TransportInbox";
 import LocationTest from "./pages/LocationTest";
 
+// Import the new HydroponicReading page (dashboard) and its SensorDisplay component is used inside it.
+import HydroponicReading from "./pages/Hydroponic/HydroponicReading";
+
+import SensorDisplay from "./components/Hydroponic/SensorDisplay";
+
 
 
 Chart.register(ArcElement);
@@ -174,7 +179,12 @@ const App = () => {
       <Route path="/allinvoice" element={<AllInvoice></AllInvoice>} />
       <Route path="/editinvoice/:id" element={<EditInvoice></EditInvoice>}/>
       
-      
+      {/*New Hydroponic Dashboard Route*/}
+      <Route path="/hydroponic-dashboard" element={<HydroponicReading />} />
+
+      {/* New Sensor Display Route */}
+      <Route path="/sensor-display" element={<SensorDisplay />} />
+        
 
        
 

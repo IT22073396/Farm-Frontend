@@ -90,7 +90,6 @@ const Register = () => {
     }
   };
 
-
   const handleKeyPress = (event) => {
     const regex = /^\d+$/;
     if (!regex.test(event.key)) {
@@ -99,8 +98,17 @@ const Register = () => {
   };
 
   return (
-    <>
-      <h3>Create your Account</h3>
+    <div style={{
+      maxWidth: '500px',
+      margin: '40px auto',
+      backgroundColor: '#ffffff',
+      padding: '30px',
+      borderRadius: '10px',
+      boxShadow: '0 0 15px rgba(0,0,0,0.1)'
+    }}>
+      <h3 style={{ marginBottom: '25px', textAlign: 'center', color: '#333' }}>
+        Create your Account
+      </h3>
       <Form onSubmit={handleSubmit}>
         <Form.Group className="mb-3" controlId="name">
           <Form.Label>Name</Form.Label>
@@ -113,8 +121,9 @@ const Register = () => {
             onChange={handleInputChange}
             required
           />
-          {errors.name && <Form.Text className="text-danger">{errors.name}</Form.Text>}
+          {errors.name && <Form.Text style={{ color: 'red' }}>{errors.name}</Form.Text>}
         </Form.Group>
+
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Label>Email address</Form.Label>
           <Form.Control
@@ -125,8 +134,8 @@ const Register = () => {
             onChange={handleInputChange}
             required
           />
-          {errors.email && <Form.Text className="text-danger">{errors.email}</Form.Text>}
-          <Form.Text className="text-muted">
+          {errors.email && <Form.Text style={{ color: 'red' }}>{errors.email}</Form.Text>}
+          <Form.Text style={{ color: '#6c757d' }}>
             We'll never share your email with anyone else.
           </Form.Text>
         </Form.Group>
@@ -141,7 +150,7 @@ const Register = () => {
             onChange={handleInputChange}
             required
           />
-          {errors.address && <Form.Text className="text-danger">{errors.address}</Form.Text>}
+          {errors.address && <Form.Text style={{ color: 'red' }}>{errors.address}</Form.Text>}
         </Form.Group>
 
         <Form.Group className="mb-3" controlId="formBasicPhone">
@@ -155,7 +164,7 @@ const Register = () => {
             onChange={handleInputChange}
             required
           />
-          {errors.phone && <Form.Text className="text-danger">{errors.phone}</Form.Text>}
+          {errors.phone && <Form.Text style={{ color: 'red' }}>{errors.phone}</Form.Text>}
         </Form.Group>
 
         <Form.Group className="mb-3" controlId="formBasicPassword">
@@ -168,30 +177,47 @@ const Register = () => {
             onChange={handleInputChange}
             required
           />
-          {errors.password && <Form.Text className="text-danger">{errors.password}</Form.Text>}
+          {errors.password && <Form.Text style={{ color: 'red' }}>{errors.password}</Form.Text>}
         </Form.Group>
 
-        <Form.Group className="mb-3" controlId="formBasicPassword">
+        <Form.Group className="mb-3" controlId="formBasicConfirmPassword">
           <Form.Label>Confirm Password</Form.Label>
           <Form.Control
             name="confirmPassword"
             type="password"
-            placeholder="Enter Password"
+            placeholder="Confirm Password"
             value={credentials.confirmPassword}
             onChange={handleInputChange}
             required
           />
-          {errors.confirmPassword && <Form.Text className="text-danger">{errors.confirmPassword}</Form.Text>}
+          {errors.confirmPassword && <Form.Text style={{ color: 'red' }}>{errors.confirmPassword}</Form.Text>}
         </Form.Group>
 
-        <Button id="btn" name="submit" variant="primary" type="submit">
+        <Button
+          id="btn"
+          name="submit"
+          variant="primary"
+          type="submit"
+          style={{
+            width: '100%',
+            backgroundColor: '#007bff',
+            border: 'none',
+            marginTop: '10px'
+          }}
+        >
           Register
         </Button>
+
         <Form.Group>
-          <p>Already Have an Account? <Link to="/login">Login</Link></p>
+          <p style={{ marginTop: '15px', fontSize: '14px', textAlign: 'center' }}>
+            Already Have an Account?
+            <Link to="/login" style={{ marginLeft: '5px', color: '#0d6efd', textDecoration: 'none' }}>
+              Login
+            </Link>
+          </p>
         </Form.Group>
       </Form>
-    </>
+    </div>
   );
 };
 

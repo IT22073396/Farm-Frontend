@@ -5,7 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 
 import { AuthContext } from '../context/AuthContext';
 import ToastContext from '../context/ToastContext';
-import loginImage from '../assets/a22.jpg';
+import logo123 from '../assets/logo123.jpg';
 
 const Login = () => {
   const { toast } = useContext(ToastContext);
@@ -25,7 +25,6 @@ const Login = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    // Handle authentications
     if (!credentials.email || !credentials.password) {
       toast.error('Please enter all the required fields!!');
       return;
@@ -37,7 +36,7 @@ const Login = () => {
       localStorage.setItem('id', user._id);
       localStorage.setItem('name', user.name);
       localStorage.setItem('address', user.address);
-      localStorage.setItem('phone',user.phone);
+      localStorage.setItem('phone', user.phone);
 
       toast.success(`Logged in ${user.name}`);
       if (user && user.userRole) {
@@ -79,13 +78,35 @@ const Login = () => {
 
   return (
     <>
-      <div className="row">
+      <div
+        className="row"
+        style={{
+          height: '100vh',
+          display: 'flex',
+          alignItems: 'center',
+          backgroundColor: '#f5f7fa',
+        }}
+      >
         <div className="col-md-6 d-flex align-items-stretch">
-          <img src={loginImage} alt="Login Image" style={{ width: '100%' }} />
+          <img
+            src={logo123}
+            alt="Login Image"
+            style={{ width: '100%', objectFit: 'cover' }}
+          />
         </div>
-        <div className="col-md-6">
-          <h3>Login</h3>
-          <Form onSubmit={handleSubmit}>
+        <div className="col-md-6" style={{ padding: '40px' }}>
+          <h3 style={{ marginBottom: '30px', color: '#333', fontWeight: '600' }}>
+            Login
+          </h3>
+          <Form
+            onSubmit={handleSubmit}
+            style={{
+              backgroundColor: '#ffffff',
+              padding: '30px',
+              borderRadius: '10px',
+              boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',
+            }}
+          >
             <Form.Group className="mb-3" controlId="formBasicEmail">
               <Form.Label>Email address</Form.Label>
               <Form.Control
@@ -115,18 +136,25 @@ const Login = () => {
               />
             </Form.Group>
 
-            <Button id="btn" name="submit" variant="primary" type="submit">
+            <Button
+              id="btn"
+              name="submit"
+              variant="primary"
+              type="submit"
+              style={{ width: '100%', marginTop: '15px' }}
+            >
               Login
             </Button>
 
             <Form.Group>
-              <p>
+              <p style={{ marginTop: '20px', fontSize: '14px' }}>
                 Don't Have an Account?
-                <Link to="/register">Register</Link>
+                <Link to="/register" style={{ marginLeft: '5px', color: '#0d6efd', textDecoration: 'none' }}>
+                  Register
+                </Link>
               </p>
             </Form.Group>
           </Form>
-          
         </div>
       </div>
     </>

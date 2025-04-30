@@ -150,7 +150,7 @@ const Navbar = ({title = "Mandri Life"}) => {
               <Nav.Link  as = {Link} to="/contactinventory" style={{ marginLeft: '10px' }}>Contact Inventory |</Nav.Link>
               <Nav.Link as = {Link} to="/transportinbox" style={{ marginLeft: '10px' }}>Transport Inbox |</Nav.Link>
               <Nav.Link  as = {Link} to="/createleave" style={{ marginLeft: '10px' }}>Add Leave |</Nav.Link> 
-              <Nav.Link as = {Link} to="/locationtest" style={{marginLeft: '10px'}}>Location |</Nav.Link>
+              <Nav.Link as = {Link} to="/hydroponic-dashboard" style={{marginLeft: '10px'}}>Sensor |</Nav.Link>
 
 
             <Button style={{ marginLeft: '10px' }} variant="danger" onClick={()=>{

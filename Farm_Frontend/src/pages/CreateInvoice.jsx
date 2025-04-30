@@ -11,22 +11,19 @@ const CreateInvoice = () => {
   const { user } = useContext(AuthContext);
   const { toast } = useContext(ToastContext);
   const navigate = useNavigate();
-  const [dateExists, setDateExists] = useState(false); // State to track if invoice exists for entered date
+  const [dateExists, setDateExists] = useState(false);
 
-  // Function to handle input change in Customer Name field
   const handleCustomerNameChange = (e, setFieldValue) => {
     const value = e.target.value;
-    // Regular expression to allow only letters
     const regex = /^[a-zA-Z\s]*$/;
-    // If the entered value matches the regex, update the form field
     if (regex.test(value)) {
       setFieldValue("cname", value);
     }
   };
 
   return (
-    <>
-      <h2>Add Invoice Details</h2>
+    <div className="container mt-5 mb-5 p-4 shadow rounded bg-light" style={{ maxWidth: "600px" }}>
+      <h2 className="text-center mb-4">Add Invoice Details</h2>
       <Formik
         initialValues={{
           id: "",
@@ -44,7 +41,6 @@ const CreateInvoice = () => {
         })}
         onSubmit={async (values, { setSubmitting, resetForm }) => {
           try {
-            // Check if invoice exists for entered date
             const res = await fetch(`http://localhost:4000/api/invoices?date=${values.orderedDate}`);
             const result = await res.json();
             if (result.length > 0) {
@@ -139,8 +135,8 @@ const CreateInvoice = () => {
               <Form.Control.Feedback type="invalid">{errors.orderedDate}</Form.Control.Feedback>
             </Form.Group>
 
-            <Form.Group className="mb-3" controlId="tamount">
-              <Form.Label>Total Amount(USD)</Form.Label>
+            <Form.Group className="mb-4" controlId="tamount">
+              <Form.Label>Total Amount (LKR)</Form.Label>
               <Form.Control
                 id="tamount"
                 name="tamount"
@@ -154,19 +150,21 @@ const CreateInvoice = () => {
               <Form.Control.Feedback type="invalid">{errors.tamount}</Form.Control.Feedback>
             </Form.Group>
 
-            <Button
-              id="btn"
-              name="submit"
-              variant="primary"
-              type="submit"
-              disabled={isSubmitting || dateExists} // Disable button if invoice exists for entered date
-            >
-              Add Invoice Details
-            </Button>
+            <div className="d-grid">
+              <Button
+                id="btn"
+                name="submit"
+                variant="primary"
+                type="submit"
+                disabled={isSubmitting || dateExists}
+              >
+                Add Invoice Details
+              </Button>
+            </div>
           </Form>
         )}
       </Formik>
-    </>
+    </div>
   );
 };
 

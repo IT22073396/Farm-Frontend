@@ -7,6 +7,10 @@ import Modal from 'react-bootstrap/Modal';
 import Spinner from 'react-bootstrap/Spinner';
 import ToastContext from "../context/ToastContext";
 import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import jsPDF from "jspdf";
+import "jspdf-autotable";
 
 const AllPayments = () =>{
     const {toast}= useContext(ToastContext);
@@ -99,29 +103,117 @@ const AllPayments = () =>{
       setPayments(newSearchPayment);
 
     };
+
+    const generatePDF = () => {
+        const doc = new jsPDF();
+        doc.text("Payments Report", 20, 10);
+    
+        const tableColumn = ["CardHolder Name", "Card Number", "Expiry Date", "Issuing Bank"];
+        const tableRows = [];
+    
+        payments.forEach(payment => {
+            const paymentData = [
+                payment.name,
+                payment.number,
+                payment.expiryDate,
+                payment.issuingBank
+            ];
+            tableRows.push(paymentData);
+        });
+    
+        doc.autoTable({
+            head: [tableColumn],
+            body: tableRows,
+        });
+    
+        doc.save("payments_report.pdf");
+    };
   
 
     return (<>
     <div style={{ backgroundColor: 'black', color: 'white',  padding: '20px' }}>
       This is the All Payments page
     <br></br>
+
+    <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
+    <Button
+        variant="secondary"
+        onClick={generatePDF}
+        style={{
+            backgroundColor: "green",
+            color: "white",
+            border: "none",
+            borderRadius: "5px",
+            padding: "10px 20px",
+            fontSize: "14px",
+            cursor: "pointer",
+        }}
+    >
+        Generate PDF Report
+    </Button>
+
     <a href="/allpayment" className="btn btn-danger my-2">Reload Payment</a>
+</div>
+
+
     {loading ? <Spinner splash="Loading Payment..." /> : (
         (payments.length == 0 ? <h3>No Payments Added</h3>:<>
+        <div className="d-flex justify-content-end">
         <form className="d-flex" onSubmit={handleSearchSubmit}>
+        </form>
+        </div>
 
-        <input
-         type="text" 
-         name="searchInput" 
-         id="searchInput"  
-         className="form-control my-2" 
-         placeholder="Search Payment"
-         value={searchInput}
-         onChange={(e) => setSearchInput(e.target.value)}
-         />
-         <Button id="Search"  variant="primary" type="submit" className="btn btn-info mx-2">
-          Search</Button>{' '}
-         </form>
+
+
+  <div className="d-flex justify-content-end">
+  <form className="d-flex" onSubmit={handleSearchSubmit}>
+    <input
+      type="text" 
+      name="searchInput" 
+      id="searchInput"  
+      className="form-control my-2" 
+      style={{ width: '450px' }} // Adjust width as needed
+      placeholder="Search Payment"
+      value={searchInput}
+      onChange={(e) => setSearchInput(e.target.value)}
+    />
+    <Button
+      id="Search" lo
+      variant="primary"
+      type="submit"
+      className="mx-2"
+      style={{
+        background: 'linear-gradient(45deg, #ff7e5f, #feb47b)', /* Gradient background */
+        color: 'white', /* Text color */
+        border: '2px solid transparent', /* Invisible border to prevent distortion */
+        borderRadius: '50px', /* Rounded corners for a smooth look */
+        padding: '12px 25px', /* Spacing inside the button */
+        fontSize: '16px', /* Text size */
+        fontWeight: 'bold', /* Make text bold */
+        textTransform: 'uppercase', /* Capitalize the text */
+        letterSpacing: '1px', /* Spacing between letters */
+        boxShadow: '0 6px 12px rgba(100, 115, 255, 0.41)', /* Shadow effect */
+        transition: 'all 0.4s ease-in-out', /* Smooth transition effect */
+        cursor: 'pointer', /* Pointer cursor to indicate it's clickable */
+      }}
+      onMouseEnter={(e) => {
+        e.target.style.background = 'linear-gradient(45deg, #feb47b, #ff7e5f)'; /* Reverse gradient on hover */
+        e.target.style.boxShadow = '0 8px 16px rgba(255, 165, 100, 0.5)'; /* Increased shadow effect */
+        e.target.style.transform = 'scale(1.05)'; /* Slight zoom effect */
+      }}
+      onMouseLeave={(e) => {
+        e.target.style.background = 'linear-gradient(45deg, #ff7e5f, #feb47b)'; /* Reset gradient */
+        e.target.style.boxShadow = '0 6px 12px rgba(255, 165, 100, 0.3)'; /* Reset shadow */
+        e.target.style.transform = 'scale(1)'; /* Reset zoom effect */
+      }}
+      onFocus={(e) => e.target.style.border = '2px solid #ff7e5f'} /* Highlight with border when focused */
+      onBlur={(e) => e.target.style.border = '2px solid transparent'} /* Remove border on blur */
+    >
+      Search
+    </Button>
+    {' '}
+  </form>
+</div>
 
         <p>Total No of Payments:{payments.length}</p>
         <Table striped bordered hover variant="light">

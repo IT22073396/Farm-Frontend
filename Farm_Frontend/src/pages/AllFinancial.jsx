@@ -116,6 +116,22 @@ const AllFinancials = () => {
             <div style={{ backgroundColor: 'black', color: 'white', padding: '20px' }}>
                 <h2>All Financial Reports</h2>
                 <Button onClick={generatePDFReport}>Generate PDF Report</Button>
+                {/* Adding a reload button to reload the page */}
+                <Button 
+                    onClick={() => window.location.reload()} 
+                    style={{
+                        backgroundColor: 'red', /* Red background */
+                        color: 'white', /* White text */
+                        border: 'none', /* No border */
+                        borderRadius: '4px', /* Slightly rounded corners */
+                        padding: '10px 20px', /* Spacing inside the button */
+                        fontSize: '14px', /* Text size */
+                        cursor: 'pointer', /* Pointer cursor to indicate it's clickable */
+                        marginLeft: '10px' /* Spacing between buttons */
+                    }}
+                >
+                    Reload Page
+                </Button>
                 <br /><br />
                 {loading ? (
                     <Spinner animation="border" role="status">
@@ -125,19 +141,51 @@ const AllFinancials = () => {
                     <h3>No Financial Reports Added</h3>
                 ) : (
                     <>
-                        <form className="d-flex" onSubmit={handleSearchSubmit}>
+                        <form className="d-flex justify-content-end" onSubmit={handleSearchSubmit}>
                             <input
                                 type="text"
                                 name="searchInput"
                                 id="searchInput"
                                 className="form-control my-2"
+                                style={{ width: '450px' }} // Adjust width as needed
                                 placeholder="Search Financial"
                                 value={searchInput}
                                 onChange={(e) => setSearchInput(e.target.value)}
                             />
-                            <Button variant="primary" type="submit" className="btn btn-info mx-2">
-                                Search
-                            </Button>
+                            <Button
+                              id="Search" lo
+                              variant="primary"
+                              type="submit"
+                              className="mx-2"
+                              style={{
+                              background: 'linear-gradient(45deg, #ff7e5f, #feb47b)', /* Gradient background */
+                              color: 'white', /* Text color */
+                              border: '2px solid transparent', /* Invisible border to prevent distortion */
+                              borderRadius: '50px', /* Rounded corners for a smooth look */
+                                                                padding: '12px 25px', /* Spacing inside the button */
+                                                                fontSize: '16px', /* Text size */
+                                                                fontWeight: 'bold', /* Make text bold */
+                                                                textTransform: 'uppercase', /* Capitalize the text */
+                                                                letterSpacing: '1px', /* Spacing between letters */
+                                                                boxShadow: '0 6px 12px rgba(255, 165, 100, 0.3)', /* Shadow effect */
+                                                                transition: 'all 0.4s ease-in-out', /* Smooth transition effect */
+                                                                cursor: 'pointer', /* Pointer cursor to indicate it's clickable */
+                                                              }}                                 
+                                                              onMouseEnter={(e) => {
+                                                                e.target.style.background = 'linear-gradient(45deg, #feb47b, #ff7e5f)'; /* Reverse gradient on hover */
+                                                                e.target.style.boxShadow = '0 8px 16px rgba(255, 165, 100, 0.5)'; /* Increased shadow effect */
+                                                                e.target.style.transform = 'scale(1.05)'; /* Slight zoom effect */
+                                                              }}
+                                                              onMouseLeave={(e) => {
+                                                                e.target.style.background = 'linear-gradient(45deg, #ff7e5f, #feb47b)'; /* Reset gradient */
+                                                                e.target.style.boxShadow = '0 6px 12px rgba(255, 165, 100, 0.3)'; /* Reset shadow */
+                                                                e.target.style.transform = 'scale(1)'; /* Reset zoom effect */
+                                                              }}
+                                                              onFocus={(e) => e.target.style.border = '2px solid #ff7e5f'} /* Highlight with border when focused */
+                                                              onBlur={(e) => e.target.style.border = '2px solid transparent'} /* Remove border on blur */
+                                                            >
+                                                              Search
+                                                            </Button>
                         </form>
 
                         <p>Total No of Financial Reports: {financials.length}</p>

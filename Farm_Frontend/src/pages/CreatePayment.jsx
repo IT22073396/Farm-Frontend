@@ -165,7 +165,7 @@ const CreatePayment = () => {
                       </div>
 
                       <small style={{ fontSize: '14px', color: 'rgb(2, 150, 29)' }}>
-                            {formik.values.number.length}/16 digits entered
+                            {formik.values.number.length}/16 digits entered   |
                       </small>
 
                             

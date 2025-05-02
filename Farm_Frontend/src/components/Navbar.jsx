@@ -161,19 +161,68 @@ const Navbar = ({title = "Farm Management"}) => {
             }} >Logout</Button>
           </Form>
           </>}
-          {user && user.userRole === "PRODUCT_MANAGER" && <> 
-            <Form className="d-flex ms-auto my-2">
-            <Nav.Link  as = {Link} to="/createproducts" style={{ marginLeft: '10px' }}>Create</Nav.Link> 
-            <Nav.Link  as = {Link} to="/allproducts" style={{ marginLeft: '10px' }}>All Products</Nav.Link> 
-            <Nav.Link  as = {Link} to="/createleave" style={{ marginLeft: '10px' }}>Add Leave</Nav.Link> 
-            <Button style={{ marginLeft: '10px' }} variant="danger" onClick={()=>{
-              setUser(null);
-              localStorage.clear();
-              toast.success("Logged Out!");
-              navigate("/login",{replace:true});
-            }} >Logout</Button>
-          </Form>
-          </>}
+          {user && user.userRole === "PRODUCT_MANAGER" && (
+              <Form className="d-flex ms-auto my-2 align-items-center">
+              <Button
+                as={Link}
+                to="/createproducts"
+                style={{ 
+                  marginLeft: '10px', 
+                  backgroundColor: '#6c757d', // Sage Green
+                  borderColor: '#6c757d',
+                  color: 'white'
+                }} 
+              >
+                🛒  Create Product
+              </Button>
+            
+              <Button
+                as={Link}
+                to="/allproducts"
+                style={{ 
+                  marginLeft: '10px', 
+                  backgroundColor: '#6c757d', // Sage Green
+                  borderColor: '#6c757d',
+                  color: 'white' 
+                }}
+              >
+                📦 All Products
+              </Button>
+            
+              <Button
+                as={Link}
+                to="/createleave"
+                style={{ 
+                  marginLeft: '10px', 
+                  backgroundColor: '#6c757d', // Sage Green
+                  borderColor: '#6c757d',
+                  color: 'white'
+                }} 
+              >
+                🧾 Add Leave
+              </Button>
+            
+              <Button
+                variant="danger"
+                style={{ 
+                  marginLeft: '10px' ,
+                  backgroundColor: '#6c757d', // Sage Green
+                  borderColor: '#6c757d',
+                }}
+                onClick={() => {
+                  setUser(null);
+                  localStorage.clear();
+                  toast.success("Logged Out!");
+                  navigate("/login", { replace: true });
+                }}
+              >
+                🚪 Logout
+              </Button>
+            </Form>
+            
+            )}
+
+
           {user && user.userRole === "PAYMENT_MANAGER" && <> 
             <Form className="d-flex ms-auto my-2">
            

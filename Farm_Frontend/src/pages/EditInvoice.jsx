@@ -123,12 +123,12 @@ const EditInvoice = () => {
 
           <Form onSubmit={handleSubmit}>
             <Form.Group className="mb-3">
-              <Form.Label>ID</Form.Label>
+              <Form.Label>Invoice No</Form.Label>
               <Form.Control
                 id="id"
                 name="id"
                 type="text"
-                placeholder="Enter Invoice ID"
+                placeholder="Enter Invoice No"
                 value={invoiceDetails.id}
                 onChange={handleInputChange}
                 required

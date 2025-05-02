@@ -8,13 +8,13 @@ import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import ToastContext from '../context/ToastContext';
-import Logo from '../assets/mandri-logo_white.png'
+import Logo from '../assets/logo.jpg'
 import CustomerProfileLogo from '../assets/customer-profile-logo2.png';
 import {PersonCircle} from 'react-bootstrap-icons';
 
 
 
-const Navbar = ({title = "Mandri Life"}) => {
+const Navbar = ({title = "Farm Management"}) => {
   const {user,setUser} = useContext(AuthContext);
   const navigate = useNavigate();
   const {toast} = useContext(ToastContext);

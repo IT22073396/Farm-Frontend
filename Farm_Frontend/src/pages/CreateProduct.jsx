@@ -234,7 +234,7 @@ const CreateProduct = () => {
                 <div className="form-col">
                   <TextField
                     name="price"
-                    label="Price ($)"
+                    label="Price (LKR)"
                     placeholder="0.00"
                     type="number"
                     step="0.01"

@@ -112,7 +112,7 @@ const AllOrders = () => {
                             <Table striped bordered hover variant="dark">
                                 <thead>
                                     <tr>
-                                        <th>Order ID</th>
+                                        
                                         <th>Total Price</th>
                                         <th>Order Date</th>
                                     </tr>
@@ -120,7 +120,7 @@ const AllOrders = () => {
                                 <tbody>
                                     {orders.map(order => (
                                         <tr key={order._id} onClick={() => { setShowModal(true); setSelectedOrder(order); }}>
-                                            <td>{order._id}</td>
+                                            
                                             {/* Calculate total price */}
                                             <td>RS.{order.cart.reduce((total, item) => total + item.price, 0)}</td>
                                             <td>{new Date(order.createdAt).toLocaleString()}</td>

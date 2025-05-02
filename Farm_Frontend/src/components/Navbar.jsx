@@ -246,7 +246,7 @@ const Navbar = ({title = "Farm Management"}) => {
          
             <Form className="d-flex ms-auto my-2">
             <Nav.Link  as = {Link} to="/customer" style={{ marginLeft: '10px' }} >Home |</Nav.Link> 
-            <Nav.Link  as = {Link} to="/vision" style={{ marginLeft: '10px' }}>Vision & Mission |</Nav.Link> 
+            
             <Nav.Link  as = {Link} to="/aboutus" style={{ marginLeft: '10px' }}>About Us |</Nav.Link>
             <Nav.Link  as = {Link} to="/customer-product" style={{ marginLeft: '10px' }}>Products |</Nav.Link>
             

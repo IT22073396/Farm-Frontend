@@ -23,9 +23,9 @@ const CreateFinancial = () => {
   const validationSchema = Yup.object().shape({
     id: Yup.string().required('ID is required'),
     dduration: Yup.number().required('Day Duration is required'),
-    tsale: Yup.number().required('Total Sales is required'),
-    tcost: Yup.number().required('Total Cost is required'),
-    cofPsales: Yup.number().required('Count of Product Sales is required'),
+    tsale: Yup.number().required('Total Revenue is required'),
+    tcost: Yup.number().required('Total Expenses is required'),
+    cofPsales: Yup.number().required('Net Profit is required'),
   });
 
   const handleSubmit = async (values, { setSubmitting, resetForm }) => {
@@ -89,12 +89,12 @@ const CreateFinancial = () => {
             </Form.Group>
 
             <Form.Group className="mb-3">
-              <Form.Label>Total Sales (LKR)</Form.Label>
+              <Form.Label>Total Revenue (LKR)</Form.Label>
               <Form.Control
                 id="tsale"
                 name="tsale"
                 type="number"
-                placeholder="Enter Total Sales"
+                placeholder="Enter Total Revenue"
                 value={formik.values.tsale}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
@@ -104,12 +104,12 @@ const CreateFinancial = () => {
             </Form.Group>
 
             <Form.Group className="mb-3">
-              <Form.Label>Total Cost (LKR)</Form.Label>
+              <Form.Label>Total Expenses (LKR)</Form.Label>
               <Form.Control
                 id="tcost"
                 name="tcost"
                 type="number"
-                placeholder="Enter Total Cost"
+                placeholder="Enter Total Expenses"
                 value={formik.values.tcost}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
@@ -119,12 +119,12 @@ const CreateFinancial = () => {
             </Form.Group>
 
             <Form.Group className="mb-4">
-              <Form.Label>Count of Product Sales</Form.Label>
+              <Form.Label>Net Profit (LKR)</Form.Label>
               <Form.Control
                 id="cofPsales"
                 name="cofPsales"
                 type="number"
-                placeholder="Enter Count of Product Sales"
+                placeholder="Enter Net Profit"
                 value={formik.values.cofPsales}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}

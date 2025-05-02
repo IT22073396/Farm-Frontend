@@ -76,12 +76,12 @@ const CreateInvoice = () => {
         {({ values, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitting, setFieldValue }) => (
           <Form onSubmit={handleSubmit}>
             <Form.Group className="mb-3">
-              <Form.Label>ID</Form.Label>
+              <Form.Label>Invoice No</Form.Label>
               <Form.Control
                 id="id"
                 name="id"
                 type="text"
-                placeholder="Enter Invoice ID"
+                placeholder="Enter Invoice No"
                 value={values.id}
                 onChange={handleChange}
                 onBlur={handleBlur}

@@ -11,7 +11,7 @@ import image5 from "../assets/a11-1.jpg";
 import image6 from "../assets/a13.jpg";
 import image7 from "../assets/a22.jpg";
 import image8 from "../assets/about.jpg";
-import image9 from "../assets/leaf-oil417x278.jpg";
+import image9 from "../assets/leaf-oil417x278.jpg"; 
 
 const Vision = () => {
     const navigate = useNavigate();
@@ -59,13 +59,13 @@ const Vision = () => {
                 <div className="col-md-6 mb-4">
                     <h2 className="text-primary fw-bold">Our Vision</h2>
                     <p className="text-muted" style={{ fontSize: '16px', lineHeight: '1.6' }}>
-                        To offer authentic, high quality, Sri Lankan Ceylon Cinnamon, Black Pepper, Spices and Essential Oils that improve people’s quality of life.
-                        Make it possible for all our international customers to harness the best and the most natural Ceylon Cinnamon and spices.
+                        To offer authentic, high quality, Sri Lankan Ceylon Milk, Black Pepper, Spices and Essential Oils that improve people’s quality of life.
+                        Make it possible for all our international customers to harness the best and the most natural Ceylon Milk.
                     </p>
 
                     <h2 className="text-success fw-bold mt-5">Our Mission</h2>
                     <p className="text-muted" style={{ fontSize: '16px', lineHeight: '1.6' }}>
-                        To be the largest producer and exporter of value-added Ceylon Cinnamon, Black Pepper and Essential Oils, while inspiring small growers to adopt best cultivation practices and modern manufacturing technologies.
+                        To be the largest producer and exporter of value-added Ceylon Milk, Youget and Chese, while inspiring small growers to adopt best cultivation practices and modern manufacturing technologies.
                     </p>
                 </div>
 

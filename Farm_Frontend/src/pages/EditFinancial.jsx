@@ -151,12 +151,12 @@ const EditFinancial = () => {
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="tsale">
-              <Form.Label>Total Sales (LKR)</Form.Label>
+              <Form.Label>Total Revenue (LKR)</Form.Label>
               <Form.Control
                 id="tsale"
                 name="tsale"
                 type="number"
-                placeholder="Enter Total Sales"
+                placeholder="Enter Total Revenue"
                 value={financialDetails.tsale}
                 onChange={handleInputChange}
                 required
@@ -164,12 +164,12 @@ const EditFinancial = () => {
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="tcost">
-              <Form.Label>Total Cost (LKR)</Form.Label>
+              <Form.Label>Total Expenses (LKR)</Form.Label>
               <Form.Control
                 id="tcost"
                 name="tcost"
                 type="number"
-                placeholder="Enter Total Cost"
+                placeholder="Enter Total Expenses"
                 value={financialDetails.tcost}
                 onChange={handleInputChange}
                 required
@@ -177,12 +177,12 @@ const EditFinancial = () => {
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="cofPsales">
-              <Form.Label>Count of Product Sales</Form.Label>
+              <Form.Label>Net Profit (LKR)</Form.Label>
               <Form.Control
                 id="cofPsales"
                 name="cofPsales"
                 type="number"
-                placeholder="Enter Count of Product Sales"
+                placeholder="Enter Net Profit"
                 value={financialDetails.cofPsales}
                 onChange={handleInputChange}
                 required

@@ -3,15 +3,15 @@ import { AuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { Modal } from "react-bootstrap";
 import backgroundImage from "../assets/vision.jpg";
-import image1 from "../assets/22.jpg";
-import image2 from "../assets/221.jpg";
-import image3 from "../assets/a2.jpg";
-import image4 from "../assets/a11.jpg";
-import image5 from "../assets/a11-1.jpg";
-import image6 from "../assets/a13.jpg";
-import image7 from "../assets/a22.jpg";
-import image8 from "../assets/about.jpg";
-import image9 from "../assets/leaf-oil417x278.jpg"; 
+import image1 from "../assets/image1.webp";
+import image2 from "../assets/image2.webp";
+import image3 from "../assets/image3.webp";
+import image4 from "../assets/image4.jpg";
+import image5 from "../assets/image5.jpeg";
+import image6 from "../assets/image6.webp";
+import image7 from "../assets/image7.jpg";
+import image8 from "../assets/image8.webp";
+import image9 from "../assets/image9.webp"; 
 
 const Vision = () => {
     const navigate = useNavigate();

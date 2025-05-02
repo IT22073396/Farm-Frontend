@@ -5,7 +5,7 @@ import Modal from 'react-bootstrap/Modal';
 import Spinner from 'react-bootstrap/Spinner';
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
-import logo from "../assets/mandri-logo_black-2.png";
+import logo from "../assets/cowlogo.jpg";
 
 const AllOrders = () => {
     const [showModal, setShowModal] = useState(false);

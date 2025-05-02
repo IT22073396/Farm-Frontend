@@ -4,7 +4,7 @@ import ToastContext from "../context/ToastContext";
 import { Link } from "react-router-dom";
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
-import logo from "../assets/mandri-logo_black-2.png"; // Import the logo
+import logo from "../assets/cowlogo.jpg"; // Import the logo
 
 const AllInvoices = () => {
     const { toast } = useContext(ToastContext);

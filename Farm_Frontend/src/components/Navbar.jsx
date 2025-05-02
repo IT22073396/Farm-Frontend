@@ -8,13 +8,13 @@ import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import ToastContext from '../context/ToastContext';
-import Logo from '../assets/mandri-logo_white.png'
+import Logo from '../assets/logo.jpg'
 import CustomerProfileLogo from '../assets/customer-profile-logo2.png';
 import {PersonCircle} from 'react-bootstrap-icons';
 
 
 
-const Navbar = ({title = "Mandri Life"}) => {
+const Navbar = ({title = "Farm Management"}) => {
   const {user,setUser} = useContext(AuthContext);
   const navigate = useNavigate();
   const {toast} = useContext(ToastContext);
@@ -150,7 +150,7 @@ const Navbar = ({title = "Mandri Life"}) => {
               <Nav.Link  as = {Link} to="/contactinventory" style={{ marginLeft: '10px' }}>Contact Inventory |</Nav.Link>
               <Nav.Link as = {Link} to="/transportinbox" style={{ marginLeft: '10px' }}>Transport Inbox |</Nav.Link>
               <Nav.Link  as = {Link} to="/createleave" style={{ marginLeft: '10px' }}>Add Leave |</Nav.Link> 
-              <Nav.Link as = {Link} to="/hydroponic-dashboard" style={{marginLeft: '10px'}}>Sensor |</Nav.Link>
+              <Nav.Link as = {Link} to="/locationtest" style={{marginLeft: '10px'}}>Location |</Nav.Link>
 
 
             <Button style={{ marginLeft: '10px' }} variant="danger" onClick={()=>{

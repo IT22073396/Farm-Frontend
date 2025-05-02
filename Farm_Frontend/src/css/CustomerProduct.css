@@ -17,7 +17,7 @@
 }
 
 .product-image-container {
-    height: 200px;
+    height: 200px; /* Maintain a fixed height for the container */
     overflow: hidden;
     display: flex;
     align-items: center;
@@ -26,9 +26,9 @@
 }
 
 .product-image {
-    width: 45%;
-    height:75%;
-    object-fit:fill;
+    width: 100%; /* Make sure the image takes the full width */
+    height: 100%; /* Make sure the image takes the full height */
+    object-fit: contain; /* This ensures the full image is shown without cropping */
     transition: transform 0.5s ease;
 }
 
@@ -65,7 +65,7 @@
 
 @media (max-width: 768px) {
     .product-image-container {
-        height: 180px;
+        height: 180px; /* Adjust container height for smaller screens */
     }
     
     .card-buttons {
@@ -76,7 +76,7 @@
 
 @media (max-width: 576px) {
     .product-image-container {
-        height: 160px;
+        height: 160px; /* Further reduce height for mobile screens */
     }
     
     .product-title {

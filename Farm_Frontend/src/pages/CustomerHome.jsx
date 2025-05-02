@@ -1,22 +1,16 @@
 import React, { useContext, useEffect } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
-import Button from 'react-bootstrap/Button';
-import customerhomepic from "../assets/IMG_3025.jpg";
-import barkoil from '../assets/a1-2.jpg';
-import mosquitoil from '../assets/a1-5.jpg';
-import herbalbalm from '../assets/a1-3.jpg';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
-const CustomerHome = () =>{
+const CustomerHome = () => {
     const navigate = useNavigate();
-    const {user} = useContext(AuthContext)
-    useEffect(()=>{
-        !user && navigate("/login", {replace:true });
+    const { user } = useContext(AuthContext);
 
-    },[]);
+    useEffect(() => {
+        if (!user) navigate("/login", { replace: true });
+    }, []);
 
-  const imagePaths = [image1, image2, image3, image4, image5, image6, image7, image8, image9];
-    // Array of image paths
     const imagePaths = [
         "/src/assets/image1.webp",
         "/src/assets/image2.webp",
@@ -30,33 +24,54 @@ const CustomerHome = () =>{
     ];
 
     return (
-        <div style={{ marginTop: '100px', display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-                <img src="/src/assets/homelogo.jpg" alt="Home Logo" style={{ width: '900px', marginRight: '20px' }} />
+        <div style={{ marginTop: '100px' }}>
+            {/* Top Section */}
+            <div className="container d-flex flex-column flex-md-row align-items-center gap-4 mb-5">
+                <img 
+                    src="/src/assets/homelogo.jpg" 
+                    alt="Home Logo" 
+                    className="img-fluid rounded shadow-sm" 
+                    style={{ maxWidth: '100%', height: 'auto', maxHeight: '400px' }} 
+                />
                 <div>
-                    <h2 style={{ color: 'orange', fontWeight: 'bold' }}>Our Business</h2>
-                    <p style={{ fontSize: '18px' }}> we specialize in raising healthy and high-quality cows to provide fresh, farm-to-table products. Our focus is on sustainable and ethical farming practices, ensuring the well-being of our livestock and delivering premium dairy and beef products.</p>
+                    <h2 className="text-warning fw-bold">Our Business</h2>
+                    <p className="text-muted" style={{ fontSize: '1.1rem' }}>
+                        We specialize in raising healthy and high-quality cows to provide fresh, farm-to-table products. 
+                        Our focus is on sustainable and ethical farming practices, ensuring the well-being of our livestock 
+                        and delivering premium dairy and beef products.
+                    </p>
                 </div>
             </div>
-            <h2 style={{ textAlign: 'center', marginTop: '50px' }}>Farm Gallery</h2>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gridGap: '20px', marginTop: '20px' }}>
-                {/* Map over the array of image paths */}
-                {imagePaths.map((imagePath, index) => (
-                    <img key={index} src={imagePath} alt={`Image ${index + 1}`} style={{ width: '300px', height: '300px', objectFit: 'cover' }} />
-                ))}
+
+            {/* Gallery Section */}
+            <div className="container mb-5">
+                <h2 className="text-center mb-4">Farm Gallery</h2>
+                <div className="row g-4">
+                    {imagePaths.map((imagePath, index) => (
+                        <div className="col-12 col-sm-6 col-md-4" key={index}>
+                            <img 
+                                src={imagePath} 
+                                alt={`Gallery Image ${index + 1}`} 
+                                className="img-fluid rounded shadow-sm" 
+                                style={{ width: '100%', height: '250px', objectFit: 'cover' }} 
+                            />
+                        </div>
+                    ))}
+                </div>
             </div>
-            
-            
-            <div style={{ backgroundColor: 'lightyellow', width: '100%', padding: '20px 0', marginTop: '50px' }}>
-               
-               
-                
-                <p style={{ fontSize: '14px', textAlign: 'center', marginTop: '20px' }}>
-                   
 
-                we are passionate about producing premium cow-based products with the highest standards of quality and care. From our rich, creamy milk to our tender, flavorful beef, every product is the result of meticulous farming practices. We believe in raising cows in a natural, stress-free environment, which translates into healthier animals and better products. Our dairy offerings include fresh milk, butter, yogurt, and artisanal cheeses, while our beef products are known for their exceptional taste and texture. Every product we offer tells the story of sustainable farming and our dedication to bringing you the very best from nature’s bounty."
-
-                </p>
+            {/* Description Section */}
+            <div className="bg-warning-subtle py-5">
+                <div className="container">
+                    <p className="text-center text-dark" style={{ fontSize: '1.05rem', maxWidth: '900px', margin: '0 auto', lineHeight: '1.8' }}>
+                        We are passionate about producing premium cow-based products with the highest standards of quality and care. 
+                        From our rich, creamy milk to our tender, flavorful beef, every product is the result of meticulous farming practices. 
+                        We believe in raising cows in a natural, stress-free environment, which translates into healthier animals and better products. 
+                        Our dairy offerings include fresh milk, butter, yogurt, and artisanal cheeses, while our beef products are known for their 
+                        exceptional taste and texture. Every product we offer tells the story of sustainable farming and our dedication to 
+                        bringing you the very best from nature’s bounty.
+                    </p>
+                </div>
             </div>
         </div>
     );

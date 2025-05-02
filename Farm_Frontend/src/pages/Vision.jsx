@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { Modal } from "react-bootstrap";
-import backgroundImage from "../assets/vision.jpg"; // Import your background image
+import backgroundImage from "../assets/vision.jpg";
 import image1 from "../assets/22.jpg";
 import image2 from "../assets/221.jpg";
 import image3 from "../assets/a2.jpg";
@@ -35,43 +35,50 @@ const Vision = () => {
         setSelectedImage(null);
     };
 
+    const images = [image1, image2, image3, image4, image5, image6, image7, image8, image9];
+
     return (
-        <div className="container mt-4">
+        <div className="container py-4" style={{ fontFamily: 'Segoe UI, sans-serif' }}>
+            {/* Header Section */}
             <div
-                className="row mb-4"
+                className="mb-5 rounded text-white text-center"
                 style={{
-                    backgroundImage: `url(${backgroundImage})`, // Set background image
+                    backgroundImage: `url(${backgroundImage})`,
                     backgroundSize: "cover",
                     backgroundPosition: "center",
-                    color: "white", // Set text color to white
-                    textAlign: "center", // Align text to center
-                    padding: "50px 0", // Add vertical padding for better visibility
+                    padding: "80px 20px",
+                    borderRadius: "12px",
+                    boxShadow: "0 4px 12px rgba(0,0,0,0.3)",
                 }}
             >
-                <div className="col-md-12">
-                    <h1>Vision & Mission</h1>
-                </div>
+                <h1 style={{ fontWeight: '700' }}>Vision & Mission</h1>
             </div>
-            <div className="row">
-                <div className="col-md-6">
-                    <h2 className="mt-4">OUR VISION</h2>
-                    <p>
-                        To offer authentic, high quality, Sri Lankan Ceylon Cinnamon, Black Pepper, Spices and Essential Oils that improve people’s quality of life  Make it possible for all our international customers to harness the best and the most natural Ceylon Cinnamon and spices.
+
+            {/* Content Section */}
+            <div className="row align-items-start">
+                <div className="col-md-6 mb-4">
+                    <h2 className="text-primary fw-bold">Our Vision</h2>
+                    <p className="text-muted" style={{ fontSize: '16px', lineHeight: '1.6' }}>
+                        To offer authentic, high quality, Sri Lankan Ceylon Cinnamon, Black Pepper, Spices and Essential Oils that improve people’s quality of life.
+                        Make it possible for all our international customers to harness the best and the most natural Ceylon Cinnamon and spices.
                     </p>
-                    <h2 className="mt-4">OUR MISSION</h2>
-                    <p>
-                        To be the largest producer and exporter of value added Ceylon Cinnamon, Black Pepper and Essential Oils, together with inspiring small growers for adopting best cultivation practices and manufacturing technologies.
+
+                    <h2 className="text-success fw-bold mt-5">Our Mission</h2>
+                    <p className="text-muted" style={{ fontSize: '16px', lineHeight: '1.6' }}>
+                        To be the largest producer and exporter of value-added Ceylon Cinnamon, Black Pepper and Essential Oils, while inspiring small growers to adopt best cultivation practices and modern manufacturing technologies.
                     </p>
                 </div>
+
+                {/* Image Grid Section */}
                 <div className="col-md-6">
-                    <div className="row">
-                        {[image1, image2, image3, image4, image5, image6, image7, image8, image9].map((image, index) => (
-                            <div className="col-md-4" key={index}>
+                    <div className="row g-3">
+                        {images.map((image, index) => (
+                            <div className="col-6 col-sm-4" key={index}>
                                 <img
                                     src={image}
-                                    alt={`Image ${index + 1}`}
-                                    className="img-fluid mb-4"
-                                    style={{ cursor: "pointer" }}
+                                    alt={`Gallery ${index + 1}`}
+                                    className="img-fluid rounded shadow-sm"
+                                    style={{ cursor: "pointer", height: '120px', objectFit: 'cover' }}
                                     onClick={() => handleImageClick(image)}
                                 />
                             </div>
@@ -79,13 +86,15 @@ const Vision = () => {
                     </div>
                 </div>
             </div>
+
+            {/* Modal for Image Preview */}
             <Modal show={showModal} onHide={handleCloseModal} centered>
-                <Modal.Body>
-                    <img src={selectedImage} alt="Selected Image" className="img-fluid" />
+                <Modal.Body className="p-0">
+                    <img src={selectedImage} alt="Preview" className="img-fluid rounded" />
                 </Modal.Body>
             </Modal>
         </div>
     );
-}
+};
 
 export default Vision;

@@ -15,7 +15,7 @@ const EditInvoice = () => {
     id: "",
     cname: "",
     orderid: "",
-    orderedDate: "", // Initialize orderedDate as a string
+    orderedDate: "",
     tamount: ""
   });
   const [loading, setLoading] = useState(false);
@@ -65,14 +65,13 @@ const EditInvoice = () => {
         });
         const result = await res.json();
 
-        // Format orderedDate to display properly
         const formattedDate = new Date(result.orderedDate).toISOString().split('T')[0];
 
         setInvoiceDetails({
           id: result.id,
           cname: result.cname,
           orderid: result.orderid,
-          orderedDate: formattedDate, // Set formattedDate
+          orderedDate: formattedDate,
           tamount: result.tamount
         });
         setLoading(false);
@@ -84,13 +83,43 @@ const EditInvoice = () => {
     fetchInvoice();
   }, []);
 
+  const containerStyle = {
+    maxWidth: "600px",
+    margin: "30px auto",
+    padding: "25px",
+    border: "1px solid #ddd",
+    borderRadius: "12px",
+    backgroundColor: "#f9f9f9",
+    boxShadow: "0 2px 6px rgba(0, 0, 0, 0.1)"
+  };
+
+  const headingStyle = {
+    textAlign: "center",
+    marginTop: "20px",
+    marginBottom: "30px",
+    fontWeight: "600",
+    color: "#333"
+  };
+
+  const buttonStyle = {
+    width: "100%",
+    padding: "10px",
+    borderRadius: "6px",
+    fontWeight: "bold",
+    backgroundColor: "#007bff",
+    border: "none"
+  };
+
   return (
     <>
       {loading ? (
-        <Spinner splash="Loading Invoices..." />
+        <div style={{ textAlign: "center", marginTop: "50px" }}>
+          <Spinner animation="border" role="status" />
+          <div>Loading Invoices...</div>
+        </div>
       ) : (
-        <>
-          <h2>Edit Invoice Details</h2>
+        <div style={containerStyle}>
+          <h2 style={headingStyle}>Edit Invoice Details</h2>
 
           <Form onSubmit={handleSubmit}>
             <Form.Group className="mb-3">
@@ -118,6 +147,7 @@ const EditInvoice = () => {
                 required
               />
             </Form.Group>
+
             <Form.Group className="mb-3" controlId="orderid">
               <Form.Label>Order ID</Form.Label>
               <Form.Control
@@ -130,6 +160,7 @@ const EditInvoice = () => {
                 required
               />
             </Form.Group>
+
             <Form.Group className="mb-3" controlId="orderedDate">
               <Form.Label>Ordered Date</Form.Label>
               <Form.Control
@@ -144,7 +175,7 @@ const EditInvoice = () => {
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="tamount">
-              <Form.Label>Total Amount(USD)</Form.Label>
+              <Form.Label>Total Amount (LKR)</Form.Label>
               <Form.Control
                 id="tamount"
                 name="tamount"
@@ -156,11 +187,11 @@ const EditInvoice = () => {
               />
             </Form.Group>
 
-            <Button id="btn" name="submit" variant="primary" type="submit">
+            <Button id="btn" name="submit" variant="primary" type="submit" style={buttonStyle}>
               Confirm Changes
             </Button>
           </Form>
-        </>
+        </div>
       )}
     </>
   );

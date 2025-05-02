@@ -13,9 +13,12 @@ import CreateInventory from "./pages/CreateInventory";
 import AllInventories from "./pages/AllInventories";
 import EditInventories from "./pages/EditInventories";
 import CreateSupplier from "./pages/CreateSupplier";
+import CreateCow from "./pages/CreateCow";
 import SupplierManagerHome from "./pages/SupplierManagerHome";
 import AllSuppliers from "./pages/AllSuppliers";
+import AllCows from "./pages/AllCows";
 import EditSupplier from "./pages/EditSupplier";
+import EditCows from "./pages/EditCows";
 import CreateOrder from "./pages/CreateOrder";
 import AllOrders from "./pages/AllOrders";
 import EditOrder from "./pages/EditOrder";
@@ -139,6 +142,9 @@ const App = () => {
       <Route path ="/createsuppliers" element={<CreateSupplier></CreateSupplier>}/>
       <Route path="/allsuppliers" element={<AllSuppliers></AllSuppliers>}/>
       <Route path="/editsupplier/:id" element={<EditSupplier></EditSupplier>}/>
+      <Route path ="/createcow" element={<CreateCow></CreateCow>}/>
+      <Route path="/allcows" element={<AllCows></AllCows>}/>
+      <Route path="/editcow/:id" element={<EditCows></EditCows>}/>
       <Route path ="/createorders" element={<CreateOrder></CreateOrder>}/>
 
       <Route path ="/createfeedbacks" element={<CreateFeedback></CreateFeedback>}/>

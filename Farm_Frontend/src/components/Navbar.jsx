@@ -114,11 +114,12 @@ const Navbar = ({title = "Farm Management"}) => {
 
           {user && user.userRole === "SUPPLIER_MANAGER" && <> 
             <Form className="d-flex ms-auto my-2">
-            <Nav.Link  as = {Link} to="/ContactTransport" style={{ marginLeft: '10px' }}>Transport Manager Inbox |</Nav.Link>
-            <Nav.Link  as = {Link} to="/ContactPayment" style={{ marginLeft: '10px' }}>Payment Manager Inbox |</Nav.Link>
-            <Nav.Link  as = {Link} to="/Suppliermails" style={{ marginLeft: '10px' }}>Supplier Inbox |</Nav.Link>
-            <Nav.Link  as = {Link} to="/supplierinbox" style={{ marginLeft: '10px' }}>Supplier Manager Inbox |</Nav.Link> 
-            <Nav.Link  as = {Link} to="/createleave" style={{ marginLeft: '10px' }}>Add Leave</Nav.Link>
+            <Button as={Link} to="/createcow" style={{ marginLeft: '10px', backgroundColor: 'green', border: 'none' }}>Add Cow Details</Button>
+            
+            <Button as={Link} to="/allcows" style={{ marginLeft: '10px', backgroundColor: 'green', border: 'none' }}>Cow Details</Button>
+            
+            <Button as={Link} to="/createleave" style={{ marginLeft: '10px', backgroundColor: 'green', border: 'none' }}>Add Leave</Button>
+            
             <Button style={{ marginLeft: '10px' }} variant="danger" onClick={()=>{
               setUser(null);
               localStorage.clear();

@@ -195,9 +195,9 @@ const AllFinancials = () => {
                                     <tr>
                                         <th>ID</th>
                                         <th>Day Duration</th>
-                                        <th>Total Sales(LKR)</th>
-                                        <th>Total Cost(LKR)</th>
-                                        <th>Count of Sales</th>
+                                        <th>Total Revenue(LKR)</th>
+                                        <th>Total Expenses(LKR)</th>
+                                        <th>Total Profit</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -228,9 +228,9 @@ const AllFinancials = () => {
                                 <>
                                     <p><strong>ID:</strong> {selectedFinancial.id}</p>
                                     <p><strong>Day Duration:</strong> {selectedFinancial.dduration}</p>
-                                    <p><strong>Total Sales(LKR):</strong> {selectedFinancial.tsale}</p>
-                                    <p><strong>Total Cost(LKR):</strong> {selectedFinancial.tcost}</p>
-                                    <p><strong>Count of Product Sales:</strong> {selectedFinancial.cofPsales}</p>
+                                    <p><strong>Total Revenue (LKR):</strong> {selectedFinancial.tsale}</p>
+                                    <p><strong>Total Expenses (LKR):</strong> {selectedFinancial.tcost}</p>
+                                    <p><strong>Total Profit (LKR):</strong> {selectedFinancial.cofPsales}</p>
                                 </>
                             )}
                         </Modal.Body>

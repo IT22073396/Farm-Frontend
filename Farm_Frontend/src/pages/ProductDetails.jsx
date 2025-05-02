@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { Card, Spinner,Button } from 'react-bootstrap';
+import { Card, Spinner, Button, Container, Row, Col } from 'react-bootstrap';
 
 const ProductDetails = () => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
-  
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -15,13 +14,12 @@ const ProductDetails = () => {
         const result = await res.json();
         if (!result.error) {
           setProduct(result);
-          setLoading(false);
         } else {
           console.error(result.error);
-          setLoading(false);
         }
       } catch (error) {
         console.error('Failed to fetch product:', error);
+      } finally {
         setLoading(false);
       }
     };
@@ -40,24 +38,32 @@ const ProductDetails = () => {
   }
 
   if (!product) {
-    return <p>Product not found</p>;
+    return <p className="text-center mt-4">Product not found</p>;
   }
 
   return (
-    <Card className="my-4">
-      <Card.Header as="h5">{product.name}</Card.Header>
-      <Card.Body>
-        <Card.Text>
-          <strong>Price:</strong> ${product.price}
-        </Card.Text>
-        <Card.Text>
-          <strong>Description:</strong> {product.description}
-        </Card.Text>
-        <Link to="/customer-product">
-        <Button variant="primary" className="mt-3" >Browse More</Button>
-        </Link>
-      </Card.Body>
-    </Card>
+    <Container className="mt-5">
+      <Row className="justify-content-center">
+        <Col md={8} lg={6}>
+          <Card className="shadow-sm rounded-3">
+            <Card.Header as="h5" className="bg-primary text-white">
+              {product.name}
+            </Card.Header>
+            <Card.Body>
+              <Card.Text>
+                <strong>Price:</strong> ${product.price}
+              </Card.Text>
+              <Card.Text>
+                <strong>Description:</strong> {product.description}
+              </Card.Text>
+              <Link to="/customer-product">
+                <Button variant="outline-primary" className="mt-3">Browse More</Button>
+              </Link>
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
+    </Container>
   );
 };
 
